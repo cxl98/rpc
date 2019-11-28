@@ -1,4 +1,28 @@
 package com.cxl.rpc.remoting.net;
 
-public class NetEnum {
+import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
+import com.cxl.rpc.remoting.net.impl.netty.server.NettyServer;
+
+public enum  NetEnum {
+
+    /**
+     * netty tcp server
+     */
+    NETTY(NettyServer.class, NettyClient.class);
+    public final Class<? extends Server> serverClass;
+    public final Class<? extends Client> clientClass;
+
+    NetEnum(Class<? extends Server> serverClass, Class<? extends Client> clientClass) {
+        this.serverClass = serverClass;
+        this.clientClass = clientClass;
+    }
+
+    public static NetEnum autoMatch(String name,NetEnum defaultEnum){
+        for (NetEnum item: NetEnum.values()) {
+            if (item.name().equals(name)){
+                return item;
+            }
+        }
+        return defaultEnum;
+    }
 }

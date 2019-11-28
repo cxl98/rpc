@@ -40,7 +40,7 @@ public class NetUtil {
      * @param port
      * @return
      */
-    private static boolean isPortUsed(int port) {
+    public static boolean isPortUsed(int port) {
         boolean used=false;
         ServerSocket serverSocket=null;
 

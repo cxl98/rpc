@@ -17,18 +17,18 @@ public class IpUtil {
     private static volatile InetAddress LOCAL_ADDRESS = null;
 
     // ---------------------- valid ----------------------
-    public static boolean isValidAddress(InetAddress address) {
+    private static boolean isValidAddress(InetAddress address) {
         if (address == null || address.isLoopbackAddress()) {
             return false;
         }
-        String name = address.getHostName();
+        String name = address.getHostAddress();
         return (name != null
                 && !ANYHOST.equals(name)
                 && !LOCALHOST.equals(name)
                 && IP_PATHEND.matcher(name).matches());
     }
 
-    public static boolean isValidV6Address(Inet6Address address) {
+    private static boolean isValidV6Address(Inet6Address address) {
         boolean preferIpv6 = Boolean.getBoolean("java.net.preferIPv6Addresses");
         if (!preferIpv6) {
             return false;
