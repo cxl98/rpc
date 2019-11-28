@@ -1,4 +1,4 @@
 package com.cxl.rpc.remoting.net;
 
-public class Client {
+public abstract class Client {
 }

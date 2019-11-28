@@ -3,7 +3,6 @@ package com.cxl.rpc.registry.impl;
 import com.cxl.registry.client.RegistryClient;
 import com.cxl.registry.client.model.RegistryDataParamVo;
 import com.cxl.rpc.registry.ServiceRegistry;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.*;
 
