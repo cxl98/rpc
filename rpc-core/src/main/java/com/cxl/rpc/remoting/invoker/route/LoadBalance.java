@@ -13,7 +13,7 @@ public enum  LoadBalance {
 
     public final RpcLoadBalance rpcLoadBalance;
 
-    private LoadBalance(RpcLoadBalance rpcLoadBalance){
+    LoadBalance(RpcLoadBalance rpcLoadBalance){
         this.rpcLoadBalance=rpcLoadBalance;
     }
 
@@ -38,9 +38,9 @@ public enum  LoadBalance {
 
         for (LoadBalance item : LoadBalance.values()) {
             long start = System.currentTimeMillis();
-            for (int i = 0; i < 100000; i++) {
-                String address =LoadBalance.LFU.rpcLoadBalance.route(serviceKey,addressSet);
-                System.out.println(address);;
+            for (int i = 0; i < 10; i++) {
+                String address =LoadBalance.RANDOM.rpcLoadBalance.route(serviceKey,addressSet);
+                System.out.println(address);
             }
             long end = System.currentTimeMillis();
             System.out.println(item.name() + " --- " + (end-start));
