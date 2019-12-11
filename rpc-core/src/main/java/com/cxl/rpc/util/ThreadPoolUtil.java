@@ -4,9 +4,9 @@ import java.util.concurrent.*;
 
 public class ThreadPoolUtil {
 
-    public static ThreadPoolExecutor makeServerThreadPool(final String serverType, int corePoolSize, int maxPoolSize) {
+    public static ThreadPoolExecutor makeServerThreadPool(final String serverType) {
         ThreadPoolExecutor serverHandlerPool=new ThreadPoolExecutor(
-                corePoolSize, maxPoolSize, 60L, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(1000), new ThreadFactory() {
+                60, 300, 60L, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(1000), new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 return new Thread(r, "rpc" + serverType + "-serverHandlerPool-" + r.hashCode());
             }
