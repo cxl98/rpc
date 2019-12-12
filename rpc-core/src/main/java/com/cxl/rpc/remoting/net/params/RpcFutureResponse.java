@@ -23,8 +23,9 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     //callback , can be null
     private RpcInvokeCallback invokeCallback;
 
-    public RpcFutureResponse(RpcInvokerFactory invokerFactory, RpcInvokeCallback invokeCallback) {
+    public RpcFutureResponse(RpcInvokerFactory invokerFactory, RpcRequest request,RpcInvokeCallback invokeCallback) {
         this.invokerFactory = invokerFactory;
+        this.request=request;
         this.invokeCallback = invokeCallback;
 
         //set-InvokerFuture
