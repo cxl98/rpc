@@ -18,10 +18,6 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
     //---------------------config------------------------
     private String netTyp= NetEnum.NETTY.name();
     private String serialize = Serializer.SerializerEnum.JACKSON.name();
-
-    private int corePoolSize;
-    private int maxPoolSize;
-
     private String ip;
     private int port;
 
@@ -46,23 +42,6 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
         return serialize;
     }
 
-    @Override
-    public int getCorePoolSize() {
-        return corePoolSize;
-    }
-
-    public void setCorePoolSize(int corePoolSize) {
-        this.corePoolSize = corePoolSize;
-    }
-
-    @Override
-    public int getMaxPoolSize() {
-        return maxPoolSize;
-    }
-
-    public void setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
-    }
 
     public String getIp() {
         return ip;
@@ -113,7 +92,7 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
         Serializer serializer=serializerEnum!=null?serializerEnum.getSerializer():null;
 
         //init config
-        super.initConfig(netTypeEnum,serializer,corePoolSize,maxPoolSize,ip,port,accessToken,serviceRegistryClass,serviceRegistryParam);
+        super.initConfig(netTypeEnum,serializer,ip,port,accessToken,serviceRegistryClass,serviceRegistryParam);
 
     }
     @Override
