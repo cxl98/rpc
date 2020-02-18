@@ -1,0 +1,81 @@
+package com.cxl.rpc.remoting.net.impl.netty_http.server;
+
+import com.cxl.rpc.remoting.net.Server;
+import com.cxl.rpc.remoting.net.params.Beat;
+import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.util.ThreadPoolUtil;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class NettyHttpServer extends Server {
+    private Thread thread;
+
+    @Override
+    public void start(RpcProviderFactory rpcProviderFactory) throws Exception {
+        thread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final ThreadPoolExecutor serverHandlerPool= ThreadPoolUtil.makeServerThreadPool(NettyHttpServer.class.getSimpleName());
+                EventLoopGroup bossGroup=new NioEventLoopGroup();
+                EventLoopGroup workGroup=new NioEventLoopGroup();
+
+                try {
+                    ServerBootstrap bootstrap=new ServerBootstrap();
+                    bootstrap.group(bossGroup,workGroup).channel(NioServerSocketChannel.class)
+                            .childHandler(new ChannelInitializer<SocketChannel>() {
+                                @Override
+                                protected void initChannel(SocketChannel channel) throws Exception {
+                                 channel.pipeline().addLast(new IdleStateHandler(0,0, Beat.BEAT_INTERVAL*3, TimeUnit.SECONDS)).addLast(new HttpServerCodec())
+                                 .addLast(new HttpObjectAggregator(5*1024*1024)).addLast(new NettyHttpServerHandler(rpcProviderFactory,serverHandlerPool));
+                                }
+                            }).childOption(ChannelOption.SO_KEEPALIVE,true);
+                    ChannelFuture future=bootstrap.bind(rpcProviderFactory.getPort()).sync();
+
+                    LOGGER.info(">>>>>>>>>>> xxl-rpc remoting server start success, nettype = {}, port = {}", NettyHttpServer.class.getName(), rpcProviderFactory.getPort());
+
+                    onStarted();
+
+                    future.channel().closeFuture().sync();
+                } catch (InterruptedException e) {
+                    if (e instanceof InterruptedException) {
+                        LOGGER.info(">>>>>>>>>>> xxl-rpc remoting server stop.");
+                    } else {
+                        LOGGER.error(">>>>>>>>>>> xxl-rpc remoting server error.", e);
+                    }
+                }finally {
+                    //stop
+                    if (serverHandlerPool != null) {
+                        serverHandlerPool.shutdown();
+                    }
+                    try {
+                        bossGroup.shutdownGracefully();
+                        workGroup.shutdownGracefully();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        if (thread != null&&thread.isAlive()) {
+            thread.interrupt();
+        }
+        onStop();
+        LOGGER.info(">>>>>> remoting server destroy success");
+    }
+}
