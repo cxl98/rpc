@@ -2,13 +2,19 @@ package com.cxl.rpc.remoting.net;
 
 import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
 import com.cxl.rpc.remoting.net.impl.netty.server.NettyServer;
+import com.cxl.rpc.remoting.net.impl.netty_http.client.NettyHttpClient;
+import com.cxl.rpc.remoting.net.impl.netty_http.server.NettyHttpServer;
 
 public enum  NetEnum {
 
     /**
      * netty tcp server
      */
-    NETTY(NettyServer.class, NettyClient.class);
+    NETTY(NettyServer.class, NettyClient.class),
+    /**
+     * netty http server
+     */
+    NETTY_HTTP(NettyHttpServer.class, NettyHttpClient.class);
     public final Class<? extends Server> serverClass;
     public final Class<? extends Client> clientClass;
 
