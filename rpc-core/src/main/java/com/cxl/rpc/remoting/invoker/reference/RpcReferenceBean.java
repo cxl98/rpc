@@ -58,6 +58,25 @@ public class RpcReferenceBean {
         this.accessToken = accessToken;
         this.invokeCallback = rpcInvokeCallback;
         this.invokerFactory = invokerFactory;
+        if (null==this.netType){
+            throw new RpcException("rpc reference netType missing.");
+        }
+        if (null==this.serializer){
+            throw new RpcException("rpc reference serializer missing.");
+        }
+        if (null== this.callType){
+            throw new RpcException("rpc reference callType missing.");
+        }
+        if (null==this.iface){
+            throw new RpcException("rpc reference iface missing.");
+        }
+        if (0>=this.timeout){
+            this.timeout=0;
+        }
+
+        if (null == this.invokerFactory) {
+            this.invokerFactory=RpcInvokerFactory.getInstance();
+        }
         // init Client
         initClient();
     }
