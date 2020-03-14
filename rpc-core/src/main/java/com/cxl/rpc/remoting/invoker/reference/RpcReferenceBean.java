@@ -37,7 +37,7 @@ public class RpcReferenceBean {
     private Class<?> iface;
     private String version;
 
-    private long timeout = 1000;
+    private long timeout;
 
     private String address;
     private String accessToken;
@@ -58,24 +58,28 @@ public class RpcReferenceBean {
         this.accessToken = accessToken;
         this.invokeCallback = rpcInvokeCallback;
         this.invokerFactory = invokerFactory;
-        if (null==this.netType){
+
+        if (null == this.netType) {
             throw new RpcException("rpc reference netType missing.");
         }
-        if (null==this.serializer){
+        if (null == this.serializer) {
             throw new RpcException("rpc reference serializer missing.");
         }
-        if (null== this.callType){
+        if (null == this.callType) {
             throw new RpcException("rpc reference callType missing.");
         }
-        if (null==this.iface){
+        if (this.loadBalance == null) {
+            throw new RpcException("rpc reference loadBalance missing.");
+        }
+        if (null == this.iface) {
             throw new RpcException("rpc reference iface missing.");
         }
-        if (0>=this.timeout){
-            this.timeout=0;
+        if (0 >= this.timeout) {
+            this.timeout = 0;
         }
 
         if (null == this.invokerFactory) {
-            this.invokerFactory=RpcInvokerFactory.getInstance();
+            this.invokerFactory = RpcInvokerFactory.getInstance();
         }
         // init Client
         initClient();
@@ -157,9 +161,7 @@ public class RpcReferenceBean {
                         TreeSet<String> addressSet = invokerFactory.getServiceRegistry().discovery(serviceKey);
 
                         //load balance
-                        if (addressSet == null || addressSet.size() == 0) {
-
-                        } else if (addressSet.size() == 1) {
+                        if (addressSet.size() == 1) {
                             finalAddress = addressSet.first();
                         } else {
                             finalAddress = loadBalance.rpcLoadBalance.route(serviceKey, addressSet);
@@ -250,17 +252,17 @@ public class RpcReferenceBean {
                         throw (e instanceof RpcException) ? e : new RpcException(e);
                     }
                     return null;
-                }else if (CallType.ONEWAY==callType){
-                    client.asyncSend(finalAddress,request);
+                } else if (CallType.ONEWAY == callType) {
+                    client.asyncSend(finalAddress, request);
                     return null;
-                }else{
-                    throw new RpcException("rpc callType["+callType+"] invalid");
+                } else {
+                    throw new RpcException("rpc callType[" + callType + "] invalid");
                 }
             }
         });
     }
 
-    public Class<?> getObjectType(){
+    public Class<?> getObjectType() {
         return iface;
     }
 }

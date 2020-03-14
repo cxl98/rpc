@@ -11,6 +11,13 @@
 
     <groupId>com.cxl</groupId>
     <artifactId>rpc-test</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.cxl</groupId>
+            <artifactId>rpc-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
