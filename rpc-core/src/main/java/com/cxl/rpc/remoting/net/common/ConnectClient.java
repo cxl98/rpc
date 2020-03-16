@@ -102,10 +102,12 @@ public abstract class ConnectClient {
             ConnectClient connectClient1=connectClientImpl.newInstance();
             try {
                 connectClient1.init(address,rpcReferenceBean.getSerializer(),rpcReferenceBean.getInvokerFactory());
+                connectClientMap.put(address,connectClient1);
             } catch (Exception e) {
                 connectClient1.close();
                 throw e;
             }
+
             return connectClient1;
         }
     }
