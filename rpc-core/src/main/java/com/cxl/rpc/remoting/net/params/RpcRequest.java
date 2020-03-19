@@ -1,11 +1,12 @@
 package com.cxl.rpc.remoting.net.params;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * request
  */
-public class RpcRequest {
+public class RpcRequest implements Serializable {
     private static final long serialVersionUID=420L;
 
 
@@ -19,10 +20,6 @@ public class RpcRequest {
     private Object[] parameters;
 
     private String version;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getRequestId() {
         return requestId;

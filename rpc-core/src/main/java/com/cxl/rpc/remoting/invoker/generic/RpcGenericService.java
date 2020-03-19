@@ -11,5 +11,5 @@ public interface RpcGenericService {
      * @param args
      * @return
      */
-    Object invoke(String iface,String version,String method,String[] parameterTypes,Object[]args);
+    Object invoke(String iface,String version,String method,String[] parameterTypes,Object[] args);
 }

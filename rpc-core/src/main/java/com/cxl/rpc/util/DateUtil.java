@@ -24,6 +24,14 @@ public class DateUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static String getDatetimeFormat() {
+        return DATETIME_FORMAT;
+    }
+
+    public static String getDateFormat() {
+        return DATE_FORMAT;
+    }
+
     private static final ThreadLocal<Map<String, DateFormat>> dateFormatThreadLocal = new ThreadLocal<Map<String, DateFormat>>();
     private static DateFormat getDateFormat(String pattern) {
         if (pattern==null || pattern.trim().length()==0) {

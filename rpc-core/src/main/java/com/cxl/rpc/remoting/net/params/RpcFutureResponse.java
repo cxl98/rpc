@@ -17,15 +17,15 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     private RpcResponse response;
 
     //future lock
-    private boolean done=false;
-    private Object lock=new Object();
+    private boolean done = false;
+    private Object lock = new Object();
 
     //callback , can be null
     private RpcInvokeCallback invokeCallback;
 
-    public RpcFutureResponse(RpcInvokerFactory invokerFactory, RpcRequest request,RpcInvokeCallback invokeCallback) {
+    public RpcFutureResponse(final RpcInvokerFactory invokerFactory, RpcRequest request, RpcInvokeCallback invokeCallback) {
         this.invokerFactory = invokerFactory;
-        this.request=request;
+        this.request = request;
         this.invokeCallback = invokeCallback;
 
         //set-InvokerFuture
@@ -35,28 +35,26 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     //-------------------------response pool-------------------------------
 
     private void setInvokerFuture() {
-        this.invokerFactory.setInvokerFuture(request.getRequestId(),this);
+        this.invokerFactory.setInvokerFuture(request.getRequestId(), this);
     }
-    public void removeInvokerFuture(){
+
+    public void removeInvokerFuture() {
         this.invokerFactory.removeInvokerFuture(request.getRequestId());
     }
 
 
-
     //---------------------get-------------------
-    public RpcRequest getRequest(){
-        return request;
-    }
-    public RpcInvokeCallback getInvokeCallback(){
+
+    public RpcInvokeCallback getInvokeCallback() {
         return invokeCallback;
     }
 
     //-------------------for invoke back-------------------------
 
-    public void setResponse(RpcResponse response){
-        this.response=response;
-        synchronized (lock){
-            done=true;
+    public void setResponse(RpcResponse response) {
+        this.response = response;
+        synchronized (lock) {
+            done = true;
             lock.notifyAll();
         }
     }
@@ -80,7 +78,7 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     @Override
     public RpcResponse get() throws InterruptedException, ExecutionException {
         try {
-            return get(-1,TimeUnit.MILLISECONDS);
+            return get(-1, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             throw new RpcException(e);
         }
@@ -89,12 +87,12 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     @Override
     public RpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         if (!done) {
-            synchronized (lock){
+            synchronized (lock) {
                 try {
-                    if (timeout<0){
+                    if (timeout < 0) {
                         lock.wait();
-                    }else{
-                        long timeoutMillis=(TimeUnit.MILLISECONDS==unit)?timeout:TimeUnit.MILLISECONDS.convert(timeout,unit);
+                    } else {
+                        long timeoutMillis = (TimeUnit.MILLISECONDS == unit) ? timeout : TimeUnit.MILLISECONDS.convert(timeout, unit);
                         lock.wait(timeoutMillis);
                     }
                 } catch (InterruptedException e) {
@@ -103,7 +101,7 @@ public class RpcFutureResponse implements Future<RpcResponse> {
             }
         }
         if (!done) {
-            throw new RpcException("rpc, request timeout at:"+System.currentTimeMillis()+", request:"+request.toString());
+            throw new RpcException("rpc, request timeout at:" + System.currentTimeMillis() + ", request:" + request.toString());
         }
         return response;
     }
