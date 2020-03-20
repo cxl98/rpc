@@ -37,7 +37,7 @@ public class RpcProviderFactory {
     public RpcProviderFactory() {
     }
 
-    public void initConfig(NetEnum netType, Serializer serializer, String ip, int port, String accessToken, Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
+    public void initConfig(NetEnum netType, Serializer serializer, int corePoolSize,int maxPoolSize,String ip, int port, String accessToken, Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
         //init
 
         this.netType = netType;

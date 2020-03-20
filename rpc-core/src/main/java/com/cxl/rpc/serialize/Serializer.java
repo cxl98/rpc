@@ -15,7 +15,7 @@ public abstract class Serializer {
 
 
         private Class<? extends Serializer> serializerClass;
-       private  SerializerEnum(Class<? extends Serializer> serializerClass){
+         SerializerEnum(Class<? extends Serializer> serializerClass){
             this.serializerClass=serializerClass;
         }
         public Serializer getSerializer(){
