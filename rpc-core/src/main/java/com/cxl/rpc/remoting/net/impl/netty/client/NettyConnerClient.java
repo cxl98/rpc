@@ -25,46 +25,48 @@ public class NettyConnerClient extends ConnectClient {
 
     private EventLoopGroup group;
     private Channel channel;
+
     @Override
-    public void init(String address, Serializer serializer, RpcInvokerFactory rpcInvokerFactory) throws Exception {
-        final NettyConnerClient thisClient=this;
+    public void init(String address, final Serializer serializer, final RpcInvokerFactory rpcInvokerFactory) throws Exception {
+        final NettyConnerClient thisClient = this;
 
-        Object[] array= IpUtil.parseIpPort(address);
-        String host= (String) array[0];
-        int port= (int) array[1];
 
-        this.group=new NioEventLoopGroup();
-        Bootstrap bootstrap=new Bootstrap();
+        this.group = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
-                                .addLast(new IdleStateHandler(0,0, Beat.BEAT_INTERVAL, TimeUnit.SECONDS))  // beat N, close if fail
-                                .addLast(new NettyEncoder(RpcRequest.class,serializer))
-                                .addLast(new NettyDecoder(RpcResponse.class,serializer))
-                                .addLast(new NettyClientHandler(rpcInvokerFactory,thisClient));
+                                .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL, TimeUnit.SECONDS))  // beat N, close if fail
+                                .addLast(new NettyEncoder(RpcRequest.class, serializer))
+                                .addLast(new NettyDecoder(RpcResponse.class, serializer))
+                                .addLast(new NettyClientHandler(rpcInvokerFactory, thisClient));
                     }
                 })
-                .option(ChannelOption.TCP_NODELAY,true)
-                .option(ChannelOption.SO_KEEPALIVE,true)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,10000);
-        this.channel=bootstrap.connect(host,port).sync().channel();
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+
+        Object[] array = IpUtil.parseIpPort(address);
+        String host = (String) array[0];
+        int port = (int) array[1];
+        this.channel = bootstrap.connect(host, port).sync().channel();
 
         if (!isValidate()) {
             close();
             return;
         }
-        logger.debug(">>>>>>>>>>>>>>>>rpc netty client proxy, connect to server success at host:{}, port:{}",host,port);
+        logger.debug(">>>>>>>>>>>>>>>>rpc netty client proxy, connect to server success at host:{}, port:{}", host, port);
     }
 
     @Override
     public void close() {
-        if (this.channel != null&&this.channel.isActive()) {
+        if (this.channel != null && this.channel.isActive()) {
             this.channel.close();
         }
-        if (this.group != null&&this.group.isShutdown()) {
+        if (this.group != null && this.group.isShutdown()) {
             this.group.shutdownGracefully();
         }
         logger.debug("rpc netty client close");
@@ -75,11 +77,11 @@ public class NettyConnerClient extends ConnectClient {
         if (this.channel != null) {
             return this.channel.isActive();
         }
-    return false;
+        return false;
     }
 
     @Override
     public void send(RpcRequest rpcRequest) throws Exception {
-        this.channel.writeAndFlush(rpcRequest);
+        this.channel.writeAndFlush(rpcRequest).sync();
     }
 }

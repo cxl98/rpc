@@ -19,7 +19,6 @@ public @interface RpcReference {
 
     LoadBalance loadBalance() default LoadBalance.ROUND;
 
-    //Class<?> iface
 
     String version() default "";
 

@@ -170,7 +170,7 @@ public class RpcProviderFactory {
 
 
         //valid
-        if (serviceBean != null) {
+        if (serviceBean == null) {
             rpcResponse.setErrorMsg("The serviceKey[" + serviceKey + "] not found.");
             return rpcResponse;
         }
