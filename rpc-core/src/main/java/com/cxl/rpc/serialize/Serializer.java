@@ -1,33 +1,38 @@
 package com.cxl.rpc.serialize;
 
+import com.cxl.rpc.serialize.impl.FastJson;
 import com.cxl.rpc.serialize.impl.JacksonSerializer;
 import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 
 public abstract class Serializer {
     public abstract <T> byte[] serializer(T obj);
-    public abstract <T> Object deserializer(byte[] bytes,Class<T> clazz);
 
-    public enum SerializerEnum{
+    public abstract <T> Object deserializer(byte[] bytes, Class<T> clazz);
+
+    public enum SerializerEnum {
 
         JACKSON(JacksonSerializer.class),
 
-        PROTOSTUFF(ProtostuffSerializer.class);
-
+        PROTOSTUFF(ProtostuffSerializer.class),
+        FASTJSON(FastJson.class);
 
         private Class<? extends Serializer> serializerClass;
-         SerializerEnum(Class<? extends Serializer> serializerClass){
-            this.serializerClass=serializerClass;
+
+        SerializerEnum(Class<? extends Serializer> serializerClass) {
+            this.serializerClass = serializerClass;
         }
-        public Serializer getSerializer(){
+
+        public Serializer getSerializer() {
             try {
                 return serializerClass.newInstance();
             } catch (Exception e) {
-               throw new RuntimeException(e);
+                throw new RuntimeException(e);
             }
         }
-        public static SerializerEnum match(String name,SerializerEnum defaultSerializer){
-            for (SerializerEnum item: SerializerEnum.values()) {
-                if (item.name().equals(name)){
+
+        public static SerializerEnum match(String name, SerializerEnum defaultSerializer) {
+            for (SerializerEnum item : SerializerEnum.values()) {
+                if (item.name().equals(name)) {
                     return item;
                 }
             }

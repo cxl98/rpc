@@ -25,8 +25,9 @@
         <netty.version>4.1.42.Final</netty.version>
 
         <protostuff.version>1.6.2</protostuff.version>
-        <objenesis.version>2.6</objenesis.version>
-
+        <objenesis.version>3.0.1</objenesis.version>
+        <jackson.version>2.10.0</jackson.version>
+        <fastjson.version>1.2.62</fastjson.version>
         <spring.version>4.3.25.RELEASE</spring.version>
         <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
     </properties>

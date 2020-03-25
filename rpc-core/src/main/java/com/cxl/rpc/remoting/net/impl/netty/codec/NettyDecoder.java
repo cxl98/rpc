@@ -23,9 +23,9 @@ public class NettyDecoder extends ByteToMessageDecoder {
         }
         in.markReaderIndex();
         int dataLength=in.readInt();
-        if (dataLength<0){
-            ctx.close();
-        }
+//        if (dataLength<0){
+//            ctx.close();
+//        }
         if (in.readableBytes()<dataLength) {
             in.markReaderIndex();
             return ;

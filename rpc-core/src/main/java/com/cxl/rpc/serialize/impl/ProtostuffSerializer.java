@@ -17,21 +17,21 @@ public class ProtostuffSerializer extends Serializer {
 
     private static Map<Class<?>, Schema<?>> cachedSchema=new ConcurrentHashMap<Class<?>, Schema<?>>();
 
-
+    @SuppressWarnings("unchecked")
     private static <T> Schema<T> getSchema(Class<T> clazz){
-        @SuppressWarnings("unchecked")
-        Schema<T> schema= (Schema<T>) cachedSchema.get(clazz);
-        if (schema==null) {
-           schema=RuntimeSchema.createFrom(clazz);
-           if (schema!=null){
-               cachedSchema.put(clazz,schema);
-           }
-        }
-        return schema;
-    }
 
+//        Schema<T> schema= (Schema<T>) cachedSchema.get(clazz);
+//        if (schema==null) {
+//           schema=RuntimeSchema.createFrom(clazz);
+//           if (schema!=null){
+//               cachedSchema.put(clazz,schema);
+//           }
+//        }
+        return (Schema<T>) cachedSchema.computeIfAbsent(clazz,RuntimeSchema::createFrom);
+    }
+    @SuppressWarnings("unchecked")
     public <T> byte[] serializer(T obj) {
-        @SuppressWarnings("unchecked")
+
         Class<T> clazz= (Class<T>) obj.getClass();
         LinkedBuffer buffer=LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
 
@@ -54,6 +54,5 @@ public class ProtostuffSerializer extends Serializer {
         } catch (Exception e) {
             throw new RpcException(e);
         }
-
     }
 }

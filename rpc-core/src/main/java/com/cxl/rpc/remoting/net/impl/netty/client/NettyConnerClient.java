@@ -66,7 +66,7 @@ public class NettyConnerClient extends ConnectClient {
         if (this.channel != null && this.channel.isActive()) {
             this.channel.close();
         }
-        if (this.group != null && this.group.isShutdown()) {
+        if (this.group != null && !this.group.isShutdown()) {
             this.group.shutdownGracefully();
         }
         logger.debug("rpc netty client close");
