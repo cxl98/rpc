@@ -46,7 +46,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+<<<<<<< HEAD
             <version>${jackson.version}</version>
+=======
+            <version>2.9.10.3</version>
+>>>>>>> a612673eed2e3aa70a34812c91034d86f65ce110
         </dependency>
 
         <!--fastjson-->
