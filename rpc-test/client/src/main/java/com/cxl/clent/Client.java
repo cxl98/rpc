@@ -20,7 +20,7 @@ public class Client {
     }
 
     private static void testSYNC() {
-        Deom deom= (Deom) new RpcReferenceBean(NetEnum.NETTY, Serializer.SerializerEnum.JACKSON.getSerializer(), CallType.SYNC, LoadBalance.ROUND,Deom.class,null,500,"127.0.0.1:8008",null,null,null).getObject();
+        Deom deom= (Deom) new RpcReferenceBean(NetEnum.NETTY, Serializer.SerializerEnum.PROTOSTUFF.getSerializer(), CallType.SYNC, LoadBalance.ROUND,Deom.class,null,500,"127.0.0.1:8008",null,null,null).getObject();
 
         UserDTO user=deom.say("[SYNC] 陈新林");
         System.out.println("xxxxxxxxxx");
