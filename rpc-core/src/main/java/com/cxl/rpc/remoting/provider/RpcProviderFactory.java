@@ -188,11 +188,15 @@ public class RpcProviderFactory {
         try {
             //invoke
             Class<?> serviceClass=serviceBean.getClass();
-            String mehtodName=request.getMethodName();
+            System.out.println("server class  "+serviceClass);
+            String methodName=request.getMethodName();
+            System.out.println("server class  "+methodName);
             Class<?>[] parameterTypes=request.getParameterTypes();
+            System.out.println("server class  "+parameterTypes);
             Object[] parameters=request.getParameters();
-
-            Method method=serviceClass.getMethod(mehtodName,parameterTypes);
+            System.out.println("server class  "+parameters);
+            Method method=serviceClass.getMethod(methodName,parameterTypes);
+            System.out.println("server class  "+method);
             method.setAccessible(true);
 
             Object result=method.invoke(serviceBean,parameters);
