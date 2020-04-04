@@ -18,8 +18,6 @@ import com.cxl.rpc.util.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -175,7 +173,7 @@ public class RpcReferenceBean {
                 }
             }
             if (finalAddress == null || finalAddress.length() == 0) {
-                throw new RpcException("rpc referencebean[" + className + "]address empty");
+                throw new RpcException("rpc rpcReferenceBean[" + className + "]address empty");
             }
 
             //request

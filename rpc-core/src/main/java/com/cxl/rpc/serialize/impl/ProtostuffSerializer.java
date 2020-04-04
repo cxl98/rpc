@@ -19,14 +19,6 @@ public class ProtostuffSerializer extends Serializer {
 
     @SuppressWarnings("unchecked")
     private static <T> Schema<T> getSchema(Class<T> clazz){
-
-//        Schema<T> schema= (Schema<T>) cachedSchema.get(clazz);
-//        if (schema==null) {
-//           schema=RuntimeSchema.createFrom(clazz);
-//           if (schema!=null){
-//               cachedSchema.put(clazz,schema);
-//           }
-//        }
         return (Schema<T>) cachedSchema.computeIfAbsent(clazz,RuntimeSchema::createFrom);
     }
     @SuppressWarnings("unchecked")

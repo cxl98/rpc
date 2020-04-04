@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class RpcResponse implements Serializable {
     private static final long serialVersionUID = 420L;
 
+
     private String requestId;
     private String errorMsg;
     private Object result;

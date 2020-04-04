@@ -13,6 +13,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.util.ReflectionUtils;
 
@@ -113,7 +114,6 @@ public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessor
     public void destroy() throws Exception {
         invokerFactory.stop();
     }
-
     private BeanFactory beanFactory;
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

@@ -30,16 +30,11 @@ public class LocalRegistry extends ServiceRegistry {
 
     @Override
     public boolean registry(Set<String> keys, String value) {
-        if (keys==null || keys.size()==0 ||value==null ||value.length()==0) {
+        if (null==keys || keys.size()==0 ||null==value ||value.length()==0) {
             return false;
         }
         for (String key: keys) {
-            TreeSet<String> values=registryData.get(key);
-
-            if (values==null) {
-                values=new TreeSet<>();
-                registryData.put(key,values);
-            }
+            registryData.computeIfAbsent(key, k -> new TreeSet<>());
         }
         return true;
     }

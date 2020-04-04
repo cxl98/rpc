@@ -1,6 +1,6 @@
 package com.cxl.rpc.serialize;
 
-import com.cxl.rpc.serialize.impl.FastJson;
+import com.cxl.rpc.serialize.impl.GsonSerializer;
 import com.cxl.rpc.serialize.impl.JacksonSerializer;
 import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 
@@ -14,7 +14,7 @@ public abstract class Serializer {
         JACKSON(JacksonSerializer.class),
 
         PROTOSTUFF(ProtostuffSerializer.class),
-        FASTJSON(FastJson.class);
+        GSON(GsonSerializer.class);
 
         private Class<? extends Serializer> serializerClass;
 

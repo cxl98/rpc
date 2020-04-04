@@ -14,18 +14,23 @@
     <artifactId>rpc-core</artifactId>
 
     <dependencies>
+        <!--slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-api.version}</version>
         </dependency>
 
+
+        <!--netty-->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
         </dependency>
 
+
+        <!--protostuff-->
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
@@ -41,8 +46,12 @@
             <artifactId>objenesis</artifactId>
             <version>3.0.1</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <!--fastJson-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -50,11 +59,11 @@
         </dependency>
 
         <!--fastjson-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.56.sec06</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.alibaba</groupId>-->
+        <!--<artifactId>fastjson</artifactId>-->
+        <!--<version>1.2.56.sec06</version>-->
+        <!--</dependency>-->
 
         <!-- spring -->
         <dependency>
@@ -93,15 +102,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--zookeeper-->
         <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-api</artifactId>
-            <version>1.6.2</version>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.13</version>
         </dependency>
+
+        <!--gson-->
         <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
-            <version>1.6.2</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.4</version>
         </dependency>
     </dependencies>
     <build>

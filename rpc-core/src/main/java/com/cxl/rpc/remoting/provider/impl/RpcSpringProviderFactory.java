@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class RpcSpringProviderFactory extends RpcProviderFactory implements ApplicationContextAware, InitializingBean, DisposableBean {
     //---------------------config------------------------
-    private String netTyp= NetEnum.NETTY.name();
+    private String netType= NetEnum.NETTY.name();
     private String serialize = Serializer.SerializerEnum.JACKSON.name();
     private int corePoolSize;
     private int maxPoolSize;
@@ -29,7 +29,7 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
     private Map<String,String> serviceRegistryParam;
 
     public void setNetTyp(String netTyp) {
-        this.netTyp = netTyp;
+        this.netType = netTyp;
     }
 
     public void setSerialize(String serialize) {
@@ -37,7 +37,7 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
     }
 
     public String getNetTyp() {
-        return netTyp;
+        return netType;
     }
 
     public String getSerialize() {
@@ -87,7 +87,7 @@ public class RpcSpringProviderFactory extends RpcProviderFactory implements Appl
     }
     private void prepareConfig(){
         //prepare config
-        NetEnum netTypeEnum=NetEnum.autoMatch(netTyp,null);
+        NetEnum netTypeEnum=NetEnum.autoMatch(netType,null);
 
         Serializer.SerializerEnum serializerEnum=Serializer.SerializerEnum.match(serialize,null);
 

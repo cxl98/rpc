@@ -11,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 
 public class RpcFutureResponse implements Future<RpcResponse> {
     private RpcInvokerFactory invokerFactory;
-
     //net data
     private RpcRequest request;
     private RpcResponse response;
@@ -105,4 +104,34 @@ public class RpcFutureResponse implements Future<RpcResponse> {
         }
         return response;
     }
+
+//    static class Async extends AbstractQueuedSynchronizer{
+//        private static final long serialVersionUID=111L;
+//
+//        private final int done=1;
+//        private final int pending=0;
+//
+//        @Override
+//        protected boolean tryAcquire(int arg) {
+//            return getState()==done;
+//        }
+//
+//        @Override
+//        protected boolean tryRelease(int arg) {
+//            if (pending==getState()){
+//                if (compareAndSetState(pending,done)) {
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }else{
+//                return true;
+//            }
+//        }
+//
+//        public boolean isDone(){
+//            getState();
+//            return getState()==done;
+//        }
+//    }
 }
