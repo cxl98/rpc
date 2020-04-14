@@ -92,6 +92,7 @@ public class RpcInvokerFactory {
     public void removeInvokerFuture(String requestId){
         futureResponsePool.remove(requestId);
     }
+
     public void notifyInvokerFuture(String requestId, final RpcResponse rpcResponse){
         //get
         final RpcFutureResponse futureResponse=futureResponsePool.get(requestId);
@@ -103,16 +104,12 @@ public class RpcInvokerFactory {
         if (futureResponse.getInvokeCallback()!=null) {
             //回调类型
             try {
-                executeResponseCallback(new Runnable(){
-
-                    @Override
-                    public void run() {
-                       if (null!=rpcResponse.getErrorMsg()){
-                           futureResponse.getInvokeCallback().onFailure(new RpcException(rpcResponse.getErrorMsg()));
-                       }else{
-                           futureResponse.getInvokeCallback().onSuccess(rpcResponse.getResult());
-                       }
-                    }
+                executeResponseCallback(() -> {
+                   if (null!=rpcResponse.getErrorMsg()){
+                       futureResponse.getInvokeCallback().onFailure(new RpcException(rpcResponse.getErrorMsg()));
+                   }else{
+                       futureResponse.getInvokeCallback().onSuccess(rpcResponse.getResult());
+                   }
                 });
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(),e);
@@ -130,16 +127,8 @@ public class RpcInvokerFactory {
         if (null == threadPoolExecutor) {
             synchronized (this) {
                 if (null == threadPoolExecutor) {
-                    threadPoolExecutor = new ThreadPoolExecutor(20, 100, 60L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000), new ThreadFactory() {
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            return new Thread(r, "rpc, RpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode());
-                        }
-                    }, new RejectedExecutionHandler() {
-                        @Override
-                        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                            throw new RpcException("rpc Invoke Callback Thread pool is EXHAUSTED!");
-                        }
+                    threadPoolExecutor = new ThreadPoolExecutor(20, 100, 60L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000), r -> new Thread(r, "rpc, RpcInvokerFactory-responseCallbackThreadPool-" + r.hashCode()), (r, executor) -> {
+                        throw new RpcException("rpc Invoke Callback Thread pool is EXHAUSTED!");
                     });
 
                 }

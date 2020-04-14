@@ -27,50 +27,47 @@ public class NettyServer extends Server {
 
     @Override
     public void start(final RpcProviderFactory rpcProviderFactory) throws Exception {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //param
-                final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.makeServerThreadPool(NettyServer.class.getSimpleName());
-                EventLoopGroup bossGroup = new NioEventLoopGroup();
-                EventLoopGroup workGroup = new NioEventLoopGroup();
+        thread = new Thread(() -> {
+            //param
+            final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.makeServerThreadPool(NettyServer.class.getSimpleName());
+            EventLoopGroup bossGroup = new NioEventLoopGroup();
+            EventLoopGroup workGroup = new NioEventLoopGroup();
 
+            try {
+                ServerBootstrap bootstrap = new ServerBootstrap();
+                bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel channel) throws Exception {
+                        channel.pipeline()
+                                .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL * 3, TimeUnit.SECONDS))
+                                .addLast(new NettyDecoder(RpcRequest.class, rpcProviderFactory.getSerializer()))
+                                .addLast(new NettyEncoder(RpcResponse.class, rpcProviderFactory.getSerializer()))
+                                .addLast(new NettyServerHandler(rpcProviderFactory, serverHandlerPool));
+                    }
+                }).childOption(ChannelOption.TCP_NODELAY, true)
+                        .childOption(ChannelOption.SO_KEEPALIVE, true);
+
+                //bind
+
+                ChannelFuture future = bootstrap.bind(rpcProviderFactory.getPort()).sync();
+
+                LOGGER.info(">>>>>>>>>>>>rpc remoting server start success , netType = {} , port ={}",NettyServer.class.getName(),rpcProviderFactory.getPort());
+                onStarted();
+
+                future.channel().closeFuture().sync();
+            } catch (InterruptedException e) {
+                if (e instanceof InterruptedException){
+                    LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
+                }else{
+                    LOGGER.error(">>>>>>>>>>>>>rpc remoting server error.",e);
+                }
+            }finally {
                 try {
-                    ServerBootstrap bootstrap = new ServerBootstrap();
-                    bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel channel) throws Exception {
-                            channel.pipeline()
-                                    .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL * 3, TimeUnit.SECONDS))
-                                    .addLast(new NettyDecoder(RpcRequest.class, rpcProviderFactory.getSerializer()))
-                                    .addLast(new NettyEncoder(RpcResponse.class, rpcProviderFactory.getSerializer()))
-                                    .addLast(new NettyServerHandler(rpcProviderFactory, serverHandlerPool));
-                        }
-                    }).childOption(ChannelOption.TCP_NODELAY, true)
-                            .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-                    //bind
-
-                    ChannelFuture future = bootstrap.bind(rpcProviderFactory.getPort()).sync();
-
-                    LOGGER.info(">>>>>>>>>>>>rpc remoting server start success , netType = {} , port ={}",NettyServer.class.getName(),rpcProviderFactory.getPort());
-                    onStarted();
-
-                    future.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    if (e instanceof InterruptedException){
-                        LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
-                    }else{
-                        LOGGER.error(">>>>>>>>>>>>>rpc remoting server error.",e);
-                    }
-                }finally {
-                    try {
-                        serverHandlerPool.shutdown();
-                        workGroup.shutdownGracefully();
-                        bossGroup.shutdownGracefully();
-                    } catch (Exception e) {
-                        LOGGER.error(e.getMessage(),e);
-                    }
+                    serverHandlerPool.shutdown();
+                    workGroup.shutdownGracefully();
+                    bossGroup.shutdownGracefully();
+                } catch (Exception e) {
+                    LOGGER.error(e.getMessage(),e);
                 }
             }
         });

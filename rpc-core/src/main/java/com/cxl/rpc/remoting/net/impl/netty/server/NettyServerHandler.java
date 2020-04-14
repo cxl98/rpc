@@ -25,7 +25,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {
         //filter beat
         if (Beat.BEAT_ID.equals(msg.getRequestId())) {
             LOGGER.debug(">>>>>>>>>>>>>>>>>>rpc provider netty server read beat-ping");
@@ -33,13 +33,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         }
         //do invoke
         try {
-            serverHandlerPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    //invoke +response
-                    RpcResponse response=rpcProviderFactory.invokeService(msg);
-                    ctx.writeAndFlush(response);
-                }
+            serverHandlerPool.execute(() -> {
+                //invoke +response
+                RpcResponse response=rpcProviderFactory.invokeService(msg);
+                ctx.writeAndFlush(response);
             });
         } catch (Exception e) {
             //catch error
