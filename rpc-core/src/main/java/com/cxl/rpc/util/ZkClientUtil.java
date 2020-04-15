@@ -41,7 +41,7 @@ public class ZkClientUtil {
     public ZooKeeper getClient() {
         if (null == zooKeeper) {
             try {
-                ZooKeeper newZk = null;
+                ZooKeeper newZk ;
                 newZk = new ZooKeeper(zkadress, 5000, watcher = watchedEvent -> countDownLatch.countDown());
                 newZk.exists(zkpath,false);
                 zooKeeper=newZk;
@@ -65,7 +65,7 @@ public class ZkClientUtil {
         }
     }
 
-    private Stat createPath(String path, boolean watch) {
+    private void createPath(String path, boolean watch) {
         try {
             Stat stat = getClient().exists(path, watch);
             if (null == stat) {
@@ -78,11 +78,10 @@ public class ZkClientUtil {
                 }
                 getClient().create(path, new byte[]{}, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
-            return getClient().exists(path, true);
+            getClient().exists(path, true);
         } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
 
@@ -99,6 +98,23 @@ public class ZkClientUtil {
         }
     }
 
+    /**
+     * 给该路径的节点设置data
+     * @param path zookeeper的路径
+     * @param data　该路径的数据
+     */
+    public Stat setPathData(String path,String data,boolean watch){
+        try {
+            Stat stat=getClient().exists(path,watch);
+            if (null==stat){
+                createPath(path,watch);
+                stat=getClient().exists(path,watch);
+            }
+            return getClient().setData(path,data.getBytes(StandardCharsets.UTF_8),stat.getVersion());
+        } catch (KeeperException | InterruptedException e) {
+            throw new RpcException(e);
+        }
+    }
     public String getPathData(String path, boolean watch) {
         String znode = null;
         try {

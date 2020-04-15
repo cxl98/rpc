@@ -14,7 +14,10 @@ public class ZkTast {
 
             TimeUnit.SECONDS.sleep(1);
         }
+        client.setPathData(path,"127.0.0.1:8888",false);
         String pathData = client.getPathData(path, false);
+
         System.out.println(pathData);
+        client.deletePath(path,false);
     }
 }
