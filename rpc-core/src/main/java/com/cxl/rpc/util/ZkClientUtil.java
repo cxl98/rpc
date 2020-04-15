@@ -54,7 +54,7 @@ public class ZkClientUtil {
         return zooKeeper;
     }
 
-    private void destroy() {
+    public void destroy() {
         if (null != zooKeeper) {
             try {
                 zooKeeper.close();
