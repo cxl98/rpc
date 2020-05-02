@@ -147,6 +147,6 @@ public class IpUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getIp());
+        System.out.println(getLocalAddress());
     }
 }

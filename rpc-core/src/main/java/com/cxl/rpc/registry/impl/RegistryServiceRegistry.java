@@ -17,9 +17,6 @@ public class RegistryServiceRegistry extends ServiceRegistry {
     
     private RegistryClient registryClient;
     
-    public RegistryClient getRegistryClient(){
-        return registryClient;
-    }
 
     @Override
     public void start(Map<String, String> param) {
