@@ -23,14 +23,14 @@ public class ProtostuffSerializer extends Serializer {
     }
     @SuppressWarnings("unchecked")
     public <T> byte[] serializer(T obj) {
-        System.out.println("obj   "+obj);
+
         Class<T> clazz= (Class<T>) obj.getClass();
-        System.out.println("class  "+clazz);
+
         LinkedBuffer buffer=LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
-        System.out.println("buffer  "+buffer);
+
         try {
             Schema<T> schema=getSchema(clazz);
-            System.out.println("schema   "+schema);
+
             return ProtostuffIOUtil.toByteArray(obj,schema,buffer);
         } catch (Exception e) {
             throw new RpcException(e);
@@ -40,13 +40,10 @@ public class ProtostuffSerializer extends Serializer {
     }
 
     public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
-        System.out.println("bytes  "+bytes.toString());
-        System.out.println("class   "+clazz);
         try {
             T message=OBJENESIS.newInstance(clazz);
             Schema<T> schema=getSchema(clazz);
             ProtostuffIOUtil.mergeFrom(bytes,message,schema);
-            System.out.println(message);
             return message;
         } catch (Exception e) {
             throw new RpcException(e);

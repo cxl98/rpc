@@ -15,14 +15,12 @@ public class GsonSerializer extends Serializer {
             throw new RpcException("Invalid obj");
         }
         String s = gson.toJson(obj);
-        System.out.println("obj"+s);
         return s.getBytes();
     }
 
     @Override
     public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
         T t = gson.fromJson(new String(bytes), clazz);
-        System.out.println("xxx"+t);
         return t;
     }
 }

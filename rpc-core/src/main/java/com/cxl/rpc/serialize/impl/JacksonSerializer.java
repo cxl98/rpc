@@ -33,11 +33,11 @@ public class JacksonSerializer extends Serializer {
      */
     @SuppressWarnings("unchecked")
     public <T> byte[] serializer(T obj) {
-        System.out.println("obj  "+obj);
+
         byte[] bytes;
         try {
             bytes = objMapper.writeValueAsBytes(obj);
-            System.out.println("bytes   "+bytes);
+
         } catch (JsonProcessingException e) {
             throw new RpcException(e);
         }

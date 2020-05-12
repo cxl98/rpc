@@ -16,7 +16,7 @@ public class RPCClient {
         testSYNC();
         TimeUnit.SECONDS.sleep(2);
 
-        RpcInvokerFactory.getInstance().stop();
+//        RpcInvokerFactory.getInstance().stop();
     }
 
     private static void testSYNC() {
