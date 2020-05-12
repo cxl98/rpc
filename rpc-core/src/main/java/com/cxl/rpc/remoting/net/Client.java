@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class Client {
-    private static final Logger LOGGER= LoggerFactory.getLogger(Client.class);
 
     //---------------------init--------------------------
     protected volatile RpcReferenceBean rpcReferenceBean;

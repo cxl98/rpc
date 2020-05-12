@@ -11,17 +11,17 @@ public abstract class Server {
     private BaseCallback startedCallback;
     private BaseCallback stopCallback;
 
-    public BaseCallback getStartedCallback() {
-        return startedCallback;
-    }
+//    public BaseCallback getStartedCallback() {
+//        return startedCallback;
+//    }
 
     public void setStartedCallback(BaseCallback startedCallback) {
         this.startedCallback = startedCallback;
     }
 
-    public BaseCallback getStopCallback() {
-        return stopCallback;
-    }
+//    public BaseCallback getStopCallback() {
+//        return stopCallback;
+//    }
 
     public void setStopCallback(BaseCallback stopCallback) {
         this.stopCallback = stopCallback;

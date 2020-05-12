@@ -68,34 +68,31 @@ public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessor
         final Set<String> serviceKeyList = new HashSet<>();
 
         //parse RpcReferenceBean
-        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
-            @Override
-            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                if (field.isAnnotationPresent(RpcReference.class)) {
-                    //valid
-                    Class iface = field.getType();
-                    if (!iface.isInterface()) {
-                        throw new RpcException("rpc, reference(RpcReference) must be interface.");
-                    }
-
-                    RpcReference rpcReference = field.getAnnotation(RpcReference.class);
-
-                    //init reference bean
-                    RpcReferenceBean referenceBean = new RpcReferenceBean(rpcReference.netType(), rpcReference.serializer().getSerializer(), rpcReference.callType(), rpcReference.loadBalance(), iface, rpcReference.version(), rpcReference.timeout(), rpcReference.address(), rpcReference.accessToken(), null, invokerFactory);
-
-                    Object serviceProxy=referenceBean.getObject();
-
-                    //set bean
-                    field.setAccessible(true);
-                    field.set(bean,serviceProxy);
-
-                    LOGGER.info(">>>>>>>>>>>>>>invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}", RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version()),beanName,field.getName());
-
-                    //collection
-                    String serviceKey=RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version());
-                    serviceKeyList.add(serviceKey);
-
+        ReflectionUtils.doWithFields(bean.getClass(), field -> {
+            if (field.isAnnotationPresent(RpcReference.class)) {
+                //valid
+                Class iface = field.getType();
+                if (!iface.isInterface()) {
+                    throw new RpcException("rpc, reference(RpcReference) must be interface.");
                 }
+
+                RpcReference rpcReference = field.getAnnotation(RpcReference.class);
+
+                //init reference bean
+                RpcReferenceBean referenceBean = new RpcReferenceBean(rpcReference.netType(), rpcReference.serializer().getSerializer(), rpcReference.callType(), rpcReference.loadBalance(), iface, rpcReference.version(), rpcReference.timeout(), rpcReference.address(), rpcReference.accessToken(), null, invokerFactory);
+
+                Object serviceProxy=referenceBean.getObject();
+
+                //set bean
+                field.setAccessible(true);
+                field.set(bean,serviceProxy);
+
+                LOGGER.info(">>>>>>>>>>>>>>invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}", RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version()),beanName,field.getName());
+
+                //collection
+                String serviceKey=RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version());
+                serviceKeyList.add(serviceKey);
+
             }
         });
 

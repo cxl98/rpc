@@ -58,7 +58,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent){
             ctx.channel().close();
-            LOGGER.debug(">>>>>>>>>>>>>>>>>>>>rpc provider netty server close an odle channel.");
+            LOGGER.debug(">>>>>>>>>>>>>>>>>>>>rpc provider netty server close an old channel.");
         }else{
             super.userEventTriggered(ctx,evt);
         }

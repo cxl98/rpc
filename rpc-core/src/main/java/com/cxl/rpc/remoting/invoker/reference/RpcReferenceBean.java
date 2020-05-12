@@ -139,15 +139,11 @@ public class RpcReferenceBean {
                     }
                 }
                 className = (String) args[0];
-                System.out.println("方法中的className   " + className);
                 version1 = (String) args[1];
                 methodName = (String) args[2];
-                System.out.println("方法中的方法名：  " + methodName);
                 parameterTypes = paramTypes;
 
-                System.out.println("方法中的参数：  " + parameterTypes);
                 parameters = (Object[]) args[4];
-                System.out.println("xxxxx" + parameters);
             }
 
             //filter method like "Object.toString()"
