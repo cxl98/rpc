@@ -1,12 +1,14 @@
 package com.cxl.rpc.remoting.provider;
 
 import com.cxl.rpc.registry.ServiceRegistry;
+import com.cxl.rpc.registry.impl.LocalRegistry;
 import com.cxl.rpc.remoting.net.NetEnum;
 import com.cxl.rpc.remoting.net.Server;
 import com.cxl.rpc.remoting.net.params.BaseCallback;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.serialize.Serializer;
+import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 import com.cxl.rpc.util.IpUtil;
 import com.cxl.rpc.util.NetUtil;
 import com.cxl.rpc.util.RpcException;
@@ -22,63 +24,81 @@ public class RpcProviderFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcProviderFactory.class);
 
     //------------------------config--------------------------
-    private NetEnum netType;
-    private Serializer serializer;
+    private NetEnum netType = NetEnum.NETTY;
+    private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
 
-
-    private String ip;       //for registry
-    private int port;        //default port
-    private String accessToken;
+    private int corePoolSize = 60;
+    private int maxPoolSize = 300;
+    private String ip = null;
+    private int port = 8888;
+    private String accessToken = null;
 
 
     private Class<? extends ServiceRegistry> serviceRegistryClass;
     private Map<String, String> serviceRegistryParam;
 
-    public RpcProviderFactory() {
-    }
-
-    public void initConfig(NetEnum netType, Serializer serializer, int corePoolSize,int maxPoolSize,String ip, int port, String accessToken, Class<? extends ServiceRegistry> serviceRegistryClass, Map<String, String> serviceRegistryParam) {
-        //init
-
+    public void setNetType(NetEnum netType) {
         this.netType = netType;
-        this.serializer = serializer;
-        this.ip = ip;
-        this.port = port;
-        this.accessToken = accessToken;
-        this.serviceRegistryClass = serviceRegistryClass;
-        this.serviceRegistryParam = serviceRegistryParam;
-
-        //valid
-        if (this.netType == null) {
-            throw new RuntimeException("rpc provider netType missing.");
-        }
-        if (this.serializer == null) {
-            throw new RuntimeException("rpc provider serializer missing.");
-        }
-
-        if (this.ip == null) {
-            this.ip = IpUtil.getIp();
-        }
-        if (this.port <= 0) {
-            this.port = 7080;
-        }
-        if (NetUtil.isPortUsed(this.port)) {
-            throw new RpcException("rpc provider port[" + this.port + "] is used.");
-        }
-        if (this.serviceRegistryClass != null) {
-            if (this.serviceRegistryParam == null) {
-                throw new RpcException("rpc provider serviceRegistryParam is Missing.");
-            }
-        }
     }
 
+    public NetEnum getNetType() {
+        return netType;
+    }
 
-    public Serializer getSerializer() {
-        return serializer;
+    public void setSerializer(Serializer serializer) {
+        this.serializer = serializer;
+    }
+
+    public int getCorePoolSize() {
+        return corePoolSize;
+    }
+
+    public void setCorePoolSize(int corePoolSize) {
+        this.corePoolSize = corePoolSize;
+    }
+
+    public int getMaxPoolSize() {
+        return maxPoolSize;
+    }
+
+    public void setMaxPoolSize(int maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public int getPort() {
         return port;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public Class<? extends ServiceRegistry> getServiceRegistryClass() {
+        return serviceRegistryClass;
+    }
+
+    public void setServiceRegistryClass(Class<? extends ServiceRegistry> serviceRegistryClass) {
+        this.serviceRegistryClass = serviceRegistryClass;
+    }
+
+    public Map<String, String> getServiceRegistryParam() {
+        return serviceRegistryParam;
+    }
+
+    public void setServiceRegistryParam(Map<String, String> serviceRegistryParam) {
+        this.serviceRegistryParam = serviceRegistryParam;
+    }
+
+    public Serializer getSerializer() {
+        return serializer;
     }
 
 
@@ -89,6 +109,17 @@ public class RpcProviderFactory {
     private String serviceAddress;
 
     public void start() throws Exception {
+        if (this.ip == null) {
+            this.ip = IpUtil.getIp();
+        }
+        if (NetUtil.isPortUsed(this.port)) {
+            throw new RpcException("rpc provider port[" + this.port + "] is used.");
+        }
+        if (this.serviceRegistryClass != null) {
+            if (this.serviceRegistryParam == null) {
+                throw new RpcException("rpc provider serviceRegistryParam is Missing.");
+            }
+        }
         //start server
         serviceAddress = IpUtil.getIpPort(this.ip, port);
         server = netType.serverClass.newInstance();
@@ -96,7 +127,7 @@ public class RpcProviderFactory {
             @Override
             public void run() throws Exception {
                 //start registry
-                if (serviceRegistryClass != null) {
+                if (null != serviceRegistryClass) {
                     serviceRegistry = serviceRegistryClass.newInstance();
                     serviceRegistry.start(serviceRegistryParam);
                     if (serviceData.size() > 0) {
@@ -181,23 +212,23 @@ public class RpcProviderFactory {
         }
 
         if (accessToken != null && accessToken.length() > 0 && !accessToken.equals(request.getAccessToken())) {
-            rpcResponse.setErrorMsg("the access token["+request.getAccessToken()+"] is wrong");
+            rpcResponse.setErrorMsg("the access token[" + request.getAccessToken() + "] is wrong");
             return rpcResponse;
         }
 
         try {
             //invoke
-            Class<?> serviceClass=serviceBean.getClass();
-            String methodName=request.getMethodName();
-            Class<?>[] parameterTypes=request.getParameterTypes();
-            Object[] parameters=request.getParameters();
-            Method method=serviceClass.getMethod(methodName,parameterTypes);
+            Class<?> serviceClass = serviceBean.getClass();
+            String methodName = request.getMethodName();
+            Class<?>[] parameterTypes = request.getParameterTypes();
+            Object[] parameters = request.getParameters();
+            Method method = serviceClass.getMethod(methodName, parameterTypes);
             method.setAccessible(true);
 
-            Object result=method.invoke(serviceBean,parameters);
+            Object result = method.invoke(serviceBean, parameters);
             rpcResponse.setResult(result);
         } catch (Throwable e) {
-            LOGGER.error("rpc provider invokeService error.",e);
+            LOGGER.error("rpc provider invokeService error.", e);
             rpcResponse.setErrorMsg(ThrowableUtil.toString(e));
         }
         return rpcResponse;
