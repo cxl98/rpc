@@ -19,7 +19,7 @@ public enum  LoadBalance {
 
     public static LoadBalance match(String name,LoadBalance defaultRouter){
         for (LoadBalance item:LoadBalance.values()){
-            if (item.equals(name)) {
+            if (item.name().equals(name)) {
                 return item;
             }
         }
@@ -36,15 +36,17 @@ public enum  LoadBalance {
             add("5");
         }};
 
-        for (LoadBalance item : LoadBalance.values()) {
-            long start = System.currentTimeMillis();
-            for (int i = 0; i < 10; i++) {
-                String address =LoadBalance.RANDOM.rpcLoadBalance.route(serviceKey,addressSet);
-                System.out.println(address);
-            }
-            long end = System.currentTimeMillis();
-            System.out.println(item.name() + " --- " + (end-start));
-        }
+//        for (LoadBalance item : LoadBalance.values()) {
+//            long start = System.currentTimeMillis();
+//            for (int i = 0; i < 10000; i++) {
+//                String address =item.rpcLoadBalance.route(serviceKey,addressSet);
+//                System.out.println(address);
+//            }
+//            long end = System.currentTimeMillis();
+//            System.out.println(item.name() + " --- " + (end-start));
+//        }
+         LoadBalance lru = LoadBalance.match("LRU", LoadBalance.ROUND);
+         System.out.println(lru.name());
 
-    }
+     }
 }

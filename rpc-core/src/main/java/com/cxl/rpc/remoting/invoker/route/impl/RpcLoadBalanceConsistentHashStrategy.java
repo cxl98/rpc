@@ -28,7 +28,7 @@ public class RpcLoadBalanceConsistentHashStrategy extends RpcLoadBalance {
            throw new RuntimeException("MD5 not supported",e);
        }
        md5.reset();
-       byte[] keyBytes=null;
+       byte[] keyBytes;
        try {
            keyBytes=key.getBytes("UTF-8");
        } catch (UnsupportedEncodingException e) {

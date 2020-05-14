@@ -9,12 +9,13 @@ public enum  CallType {
 
     ONEWAY;
 
-    public static CallType match(String name,CallType defsultCallTyp){
+
+    public static String match(String name, CallType defaultCallType){
         for (CallType item: CallType.values()) {
             if (item.name().equals(name)){
-                return item;
+                return item.name();
             }
         }
-        return defsultCallTyp;
+        return defaultCallType.name();
     }
 }
