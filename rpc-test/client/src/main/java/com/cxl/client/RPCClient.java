@@ -20,10 +20,14 @@ public class RPCClient {
     }
 
     private static void testSYNC() {
-        Deom deom= (Deom) new RpcReferenceBean(NetEnum.NETTY, Serializer.SerializerEnum.PROTOSTUFF.getSerializer(), CallType.SYNC, LoadBalance.ROUND,Deom.class,null,500,"127.0.0.1:8888",null,null,null).getObject();
-
-        UserDTO user= (UserDTO) deom.say("123456","123456");
-        System.out.println(user);
+//        Deom deom= (Deom) new RpcReferenceBean(NetEnum.NETTY, Serializer.SerializerEnum.PROTOSTUFF.getSerializer(), CallType.SYNC, LoadBalance.ROUND,Deom.class,null,500,"127.0.0.1:8888",null,null,null).getObject();
+//        Deom deom= (Deom) new RpcReferenceBean();
+        RpcReferenceBean referenceBean=new RpcReferenceBean();
+        referenceBean.setIface(Deom.class);
+        referenceBean.setAddress("127.0.0.1:8888");
+        Deom deom = (Deom) referenceBean.getObject();
+        UserDTO say = (UserDTO) deom.say("123456", "123456");
+        System.out.println(say);
 
     }
 }
