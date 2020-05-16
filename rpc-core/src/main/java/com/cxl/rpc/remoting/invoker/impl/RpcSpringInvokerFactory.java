@@ -79,13 +79,13 @@ public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessor
                 RpcReference rpcReference = field.getAnnotation(RpcReference.class);
 
                 //init reference bean
-                RpcReferenceBean referenceBean = new RpcReferenceBean(rpcReference.netType(), rpcReference.serializer().getSerializer(), rpcReference.callType(), rpcReference.loadBalance(), iface, rpcReference.version(), rpcReference.timeout(), rpcReference.address(), rpcReference.accessToken(), null, invokerFactory);
+//                RpcReferenceBean referenceBean = new RpcReferenceBean(rpcReference.netType(), rpcReference.serializer().getSerializer(), rpcReference.callType(), rpcReference.loadBalance(), iface, rpcReference.version(), rpcReference.timeout(), rpcReference.address(), rpcReference.accessToken(), null, invokerFactory);
 
-                Object serviceProxy=referenceBean.getObject();
+//                Object serviceProxy=referenceBean.getObject();
 
                 //set bean
                 field.setAccessible(true);
-                field.set(bean,serviceProxy);
+//                field.set(bean,serviceProxy);
 
                 LOGGER.info(">>>>>>>>>>>>>>invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}", RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version()),beanName,field.getName());
 

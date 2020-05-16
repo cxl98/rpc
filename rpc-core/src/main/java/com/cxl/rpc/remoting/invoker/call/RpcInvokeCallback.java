@@ -6,5 +6,30 @@ public abstract class RpcInvokeCallback<T> {
     public abstract void onFailure(Throwable exception);
 
     //===================thread invoke callback======================
+    //callback , can be null
+    private static ThreadLocal<RpcInvokeCallback> threadInvokerFuture=new ThreadLocal<>();
 
+    /**
+     * get callback
+     */
+    public  RpcInvokeCallback getCallback(){
+        RpcInvokeCallback invokeCallback=threadInvokerFuture.get();
+//        threadInvokerFuture.remove();
+        return invokeCallback;
+    }
+
+    /**
+     * set future
+     */
+    public static void setCallback(RpcInvokeCallback invokeCallback){
+        threadInvokerFuture.set(invokeCallback);
+    }
+
+    /**
+     * remove future
+     */
+
+    public static void removeCallback(){
+        threadInvokerFuture.remove();
+    }
 }
