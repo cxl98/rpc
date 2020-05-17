@@ -69,7 +69,7 @@ public class RpcInvokeFuture implements Future {
      */
     public static <T> Future<T> getFuture(){
         Future<T> future=(Future<T>) threadInvokerFuture.get();
-        threadInvokerFuture.remove();
+        removeFuture();
         return future;
     }
 

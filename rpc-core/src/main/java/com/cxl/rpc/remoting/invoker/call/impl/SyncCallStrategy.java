@@ -1,11 +1,6 @@
 package com.cxl.rpc.remoting.invoker.call.impl;
 
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
 import com.cxl.rpc.remoting.invoker.call.CallBack;
-import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.net.Client;
-import com.cxl.rpc.remoting.net.NetEnum;
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.util.RpcException;
@@ -16,20 +11,19 @@ public class SyncCallStrategy extends CallBack {
 
 
     @Override
-    public RpcResponse export(NetEnum type, String address, RpcRequest request, RpcReferenceBean rpcReferenceBean) {
-        RpcInvokerFactory invokerFactory = rpcReferenceBean.getInvokerFactory();
-        rpcFutureResponse=new RpcFutureResponse(invokerFactory,request);
+    public Object export(RpcRequest request) {
         RpcResponse response;
         try {
-            Client client = rpcReferenceBean.getClient();
-            client.asyncSend(address,request);
-             response=rpcFutureResponse.get(rpcReferenceBean.getTimeout(), TimeUnit.MILLISECONDS);
-            if (null!=response.getErrorMsg()){
+            client.asyncSend(address, request);
+            response = rpcFutureResponse.get(500, TimeUnit.MILLISECONDS);
+            if (null != response.getErrorMsg()) {
                 throw new RpcException(response.getErrorMsg());
             }
-            return response;
+            return response.getResult();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            rpcFutureResponse.removeInvokerFuture();
         }
         return null;
     }

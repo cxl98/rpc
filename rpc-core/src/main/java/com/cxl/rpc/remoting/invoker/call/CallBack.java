@@ -5,8 +5,12 @@ import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
 import com.cxl.rpc.remoting.net.Client;
 import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class CallBack {
+
+    protected static final Logger LOGGER= LoggerFactory.getLogger(CallBack.class);
     protected RpcFutureResponse rpcFutureResponse;
     protected Client client;
     protected String address;

@@ -2,15 +2,10 @@ package com.cxl.client;
 
 import com.cxl.api.Deom;
 import com.cxl.api.dto.UserDTO;
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
 import com.cxl.rpc.remoting.invoker.call.CallType;
 import com.cxl.rpc.remoting.invoker.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.invoker.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.invoker.route.LoadBalance;
-import com.cxl.rpc.remoting.net.NetEnum;
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
-import com.cxl.rpc.serialize.Serializer;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -21,11 +16,13 @@ public class RPCClient {
 //        testSYNC();
 //        testOneWay();
 //        testFuture();
-//        TimeUnit.SECONDS.sleep(2);
         testCALLBACK();
 
 
-        RpcInvokerFactory.getInstance().stop();
+        TimeUnit.SECONDS.sleep(2);
+
+
+//        RpcInvokerFactory.getInstance().stop();
     }
 
     private static void testSYNC() {
@@ -50,6 +47,7 @@ public class RPCClient {
 
             @Override
             public void onSuccess(UserDTO result) {
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>xxxxxxx");
                 System.out.println(result);
             }
 
