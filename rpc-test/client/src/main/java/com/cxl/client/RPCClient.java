@@ -2,10 +2,12 @@ package com.cxl.client;
 
 import com.cxl.api.Deom;
 import com.cxl.api.dto.UserDTO;
+import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
 import com.cxl.rpc.remoting.invoker.call.CallType;
 import com.cxl.rpc.remoting.invoker.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.invoker.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
+import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -13,16 +15,16 @@ import java.util.concurrent.TimeUnit;
 
 public class RPCClient {
     public static void main(String[] args) throws Exception {
-//        testSYNC();
-//        testOneWay();
-//        testFuture();
         testCALLBACK();
+        testSYNC();
+        testOneWay();
+        testFuture();
 
 
-        TimeUnit.SECONDS.sleep(2);
+//        TimeUnit.SECONDS.sleep(2);
 
 
-//        RpcInvokerFactory.getInstance().stop();
+        RpcInvokerFactory.getInstance().stop();
     }
 
     private static void testSYNC() {
