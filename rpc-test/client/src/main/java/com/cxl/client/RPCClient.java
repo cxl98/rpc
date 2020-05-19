@@ -2,16 +2,14 @@ package com.cxl.client;
 
 import com.cxl.api.Deom;
 import com.cxl.api.dto.UserDTO;
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
-import com.cxl.rpc.remoting.invoker.call.CallType;
-import com.cxl.rpc.remoting.invoker.call.RpcInvokeCallback;
-import com.cxl.rpc.remoting.invoker.call.RpcInvokeFuture;
-import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
+import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
+import com.cxl.rpc.remoting.consumer.call.CallType;
+import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
+import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
+import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class RPCClient {
     public static void main(String[] args) throws Exception {
