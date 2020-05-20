@@ -16,11 +16,6 @@ public class RpcInvokeFuture implements Future {
         this.futureResponse = futureResponse;
     }
 
-    public void stop(){
-        //remove-InvokerFuture
-        futureResponse.removeInvokerFuture();
-    }
-
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
         return futureResponse.cancel(mayInterruptIfRunning);
@@ -39,7 +34,7 @@ public class RpcInvokeFuture implements Future {
     @Override
     public Object get() throws InterruptedException, ExecutionException {
         try {
-            return get(-1,TimeUnit.MILLISECONDS);
+            return get(500,TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             throw new RpcException(e);
         }
@@ -47,7 +42,6 @@ public class RpcInvokeFuture implements Future {
 
     @Override
     public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        try {
             //future get
             RpcResponse response=futureResponse.get(timeout,unit);
 
@@ -55,9 +49,6 @@ public class RpcInvokeFuture implements Future {
                 throw new RpcException(response.getErrorMsg());
             }
             return response.getResult();
-        } finally {
-            stop();
-        }
     }
 
     private static ThreadLocal<RpcInvokeFuture> threadInvokerFuture=new ThreadLocal<>();

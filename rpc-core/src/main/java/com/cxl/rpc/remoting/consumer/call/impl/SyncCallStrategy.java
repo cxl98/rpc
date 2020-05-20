@@ -15,7 +15,7 @@ public class SyncCallStrategy extends CallBack {
         RpcResponse response;
         try {
             client.asyncSend(address, request);
-            response = rpcFutureResponse.get(500, TimeUnit.MILLISECONDS);
+            response = rpcFutureResponse.get(5000, TimeUnit.MILLISECONDS);
             if (null != response.getErrorMsg()) {
                 throw new RpcException(response.getErrorMsg());
             }
@@ -23,7 +23,8 @@ public class SyncCallStrategy extends CallBack {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            rpcFutureResponse.removeInvokerFuture();
+//            rpcFutureResponse.removeInvokerFuture();
+            rpcInvokerFactory.removeInvokerFuture(request.getRequestId());
         }
         return null;
     }

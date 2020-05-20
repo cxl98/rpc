@@ -13,10 +13,10 @@ import java.util.concurrent.Future;
 
 public class RPCClient {
     public static void main(String[] args) throws Exception {
-        testCALLBACK();
-        testSYNC();
+//        testCALLBACK();
+//        testSYNC();
         testOneWay();
-        testFuture();
+//        testFuture();
 
 
 //        TimeUnit.SECONDS.sleep(2);

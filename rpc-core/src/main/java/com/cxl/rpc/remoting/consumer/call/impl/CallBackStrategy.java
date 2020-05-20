@@ -18,7 +18,7 @@ public class CallBackStrategy extends CallBack {
         try {
             client.asyncSend(address,request);
         } catch (Exception e) {
-            rpcFutureResponse.removeInvokerFuture();
+            rpcInvokerFactory.removeInvokerFuture(request.getRequestId());
             e.printStackTrace();
         }
         return null;
