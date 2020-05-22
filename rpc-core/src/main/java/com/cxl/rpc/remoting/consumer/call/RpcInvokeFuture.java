@@ -55,8 +55,8 @@ public class RpcInvokeFuture implements Future {
 
     /**
      * get future
-     * @param <T>
-     * @return
+     * @param <T> api
+     * @return api
      */
     public static <T> Future<T> getFuture(){
         Future<T> future=(Future<T>) threadInvokerFuture.get();
@@ -68,7 +68,7 @@ public class RpcInvokeFuture implements Future {
         threadInvokerFuture.set(future);
     }
 
-    public static void removeFuture(){
+    private static void removeFuture(){
         threadInvokerFuture.remove();
     }
 }

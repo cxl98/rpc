@@ -29,7 +29,7 @@ public abstract class RpcInvokeCallback<T> {
      * remove future
      */
 
-    public static void removeCallback(){
+    private static void removeCallback(){
         threadInvokerFuture.remove();
     }
 }
