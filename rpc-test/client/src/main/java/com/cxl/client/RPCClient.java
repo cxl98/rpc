@@ -10,16 +10,17 @@ import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class RPCClient {
     public static void main(String[] args) throws Exception {
-//        testCALLBACK();
+        testCALLBACK();
 //        testSYNC();
-        testOneWay();
+//        testOneWay();
 //        testFuture();
 
 
-//        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(2);
 
 
         RpcInvokerFactory.getInstance().stop();

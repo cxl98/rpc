@@ -14,7 +14,7 @@ public class CallBackStrategy extends CallBack {
         if (null==callback){
             throw new RpcException("rpc RpcInvokeCallback（CallType="+ CallType.CALLBACK.name() +"） cannot be null.");
         }
-        rpcFutureResponse.setInvokeCallback(callback);
+        rpcFutureResponse.addInvokeCallback(callback);
         try {
             client.asyncSend(address,request);
         } catch (Exception e) {

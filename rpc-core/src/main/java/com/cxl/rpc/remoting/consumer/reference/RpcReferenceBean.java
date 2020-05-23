@@ -107,13 +107,6 @@ public class RpcReferenceBean {
         this.accessToken = accessToken;
     }
 
-//    public RpcInvokeCallback getInvokeCallback() {
-//        return invokeCallback;
-//    }
-
-//    public void setInvokeCallback(RpcInvokeCallback invokeCallback) {
-//        this.invokeCallback = invokeCallback;
-//    }
 
     public void setInvokerFactory(RpcInvokerFactory invokerFactory) {
         this.invokerFactory = invokerFactory;
@@ -121,8 +114,6 @@ public class RpcReferenceBean {
 
 
     public RpcReferenceBean() {
-        // init Client
-//        initClient();
     }
 
     //get
@@ -145,7 +136,7 @@ public class RpcReferenceBean {
         return client;
     }
 
-    public void initClient() {
+    public void init() {
         if (null == this.netType) {
             throw new RpcException("rpc reference netType missing.");
         }
@@ -184,7 +175,7 @@ public class RpcReferenceBean {
     //---------------------util-----------------
 
     public Object getObject() {
-        initClient();
+        init();
         return Proxy.newProxyInstance(Thread.currentThread()
                 .getContextClassLoader(), new Class[]{iface}, (proxy, method, args) -> {
             //method param
@@ -261,82 +252,6 @@ public class RpcReferenceBean {
             if (null != export) {
                 return export;
             }
-
-            //send
-//            if (CallType.SYNC == callType) {
-//                //future-response set
-//                RpcFutureResponse futureResponse = new RpcFutureResponse(invokerFactory, request);
-//
-//                try {
-//                    //do invoke
-//                    client.asyncSend(finalAddress, request);
-//
-//
-//                    //future get
-//                    RpcResponse response = futureResponse.get(timeout, TimeUnit.MILLISECONDS);
-//                    if (response.getErrorMsg() != null) {
-//                        throw new RpcException(response.getErrorMsg());
-//                    }
-//                    return response.getResult();
-//                } catch (Exception e) {
-//                    LOGGER.info(">>>>>>>>>>>>>>>rpc ,invoke error , address:{}, rpcRequest:{}", finalAddress, request);
-//                    throw (e instanceof RpcException) ? e : new RpcException(e);
-//                } finally {
-//                    //future-response remove
-//                    futureResponse.removeInvokerFuture();
-//                }
-//            } else if (CallType.FUTURE == callType) {
-//                //future-response set
-//                RpcFutureResponse futureResponse = new RpcFutureResponse(invokerFactory, request);
-//
-//                try {
-//                    //invoke future set
-//                    RpcInvokeFuture invokeFuture = new RpcInvokeFuture(futureResponse);
-//                    RpcInvokeFuture.setFuture(invokeFuture);
-//
-//
-//                    //do invoke
-//                    client.asyncSend(finalAddress, request);
-//                    return null;
-//                } catch (Exception e) {
-//                    LOGGER.info(">>>>>>>>>>>>>>>>>>>>rpc, invoke error , address:{}, RpcRequest{}", finalAddress, request);
-//
-//                    //future-response remove
-//                    futureResponse.removeInvokerFuture();
-//                    throw (e instanceof RpcException) ? e : new RpcException(e);
-//                }
-//            } else if (CallType.CALLBACK == callType) {
-//                //get callback
-//                RpcInvokeCallback finalInvokeCallback = invokeCallback;
-//                RpcInvokeCallback threadInvokeCallback = RpcInvokeCallback.getCallback();
-//
-//                if (threadInvokeCallback != null) {
-//                    finalInvokeCallback = threadInvokeCallback;
-//                }
-//                if (finalInvokeCallback == null) {
-//                    throw new RpcException("rpc RpcInvokeCallback CallType=" + CallType.CALLBACK.name() + ") cannot be null.");
-//                }
-//
-//                //future-response set
-//                RpcFutureResponse futureResponse = new RpcFutureResponse(invokerFactory, request, finalInvokeCallback);
-//
-//                try {
-//                    client.asyncSend(finalAddress, request);
-//                } catch (Exception e) {
-//                    LOGGER.info(">>>>>>>>>>>>>>rpc , invoke error , address:{}, RpcRequest{}", finalAddress, request);
-//
-//                    //future-response remove
-//                    futureResponse.removeInvokerFuture();
-//
-//                    throw (e instanceof RpcException) ? e : new RpcException(e);
-//                }
-//                return null;
-//            } else if (CallType.ONEWAY == callType) {
-//                client.asyncSend(finalAddress, request);
-//                return null;
-//            } else {
-//                throw new RpcException("rpc callType[" + callType + "] invalid");
-//            }
             return null;
         });
     }

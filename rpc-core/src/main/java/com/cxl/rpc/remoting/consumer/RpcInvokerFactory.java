@@ -28,7 +28,6 @@ public class RpcInvokerFactory {
     }
 
 
-    //=========================config===================
     private Class<? extends ServiceRegistry> serviceRegistryClass;
     //class.for name
     private Map<String, String> serviceRegistryParam;
@@ -68,8 +67,6 @@ public class RpcInvokerFactory {
             }
         }
 
-        //stop CallbackThreadPool
-        stopCallbackThreadPool();
     }
 
     //---------------------service registry-------------------
@@ -102,23 +99,9 @@ public class RpcInvokerFactory {
         if (futureResponse == null) {
             return;
         }
-
-        //notify
         if (futureResponse.getInvokeCallback() != null) {
-            //回调类型
-            try {
-                executeResponseCallback(() -> {
-                    if (null != rpcResponse.getErrorMsg()) {
-                        futureResponse.getInvokeCallback().onFailure(new RpcException(rpcResponse.getErrorMsg()));
-                    } else {
-                        futureResponse.getInvokeCallback().onSuccess(rpcResponse.getResult());
-                    }
-                });
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
-            }finally {
-                stopCallbackThreadPool();
-            }
+            //回调
+            futureResponse.call(rpcResponse);
         } else {
             // 其他回调类型
             futureResponse.setResponse(rpcResponse);
@@ -127,25 +110,20 @@ public class RpcInvokerFactory {
         futureResponsePool.remove(requestId);
     }
 
-    //------------------response callback ThreadPool-------------------
-    private ThreadPoolExecutor threadPoolExecutor = null;
+//    //------------------response callback ThreadPool-------------------
+//    private ThreadPoolExecutor threadPoolExecutor = null;
+//
+//    private void execute(Runnable runnable) {
+//        if (null == threadPoolExecutor) {
+//            synchronized (this) {
+//                if (null == threadPoolExecutor) {
+//                    threadPoolExecutor = ThreadPoolUtil.ThreadPool(RpcInvokerFactory.class.getName());
+//
+//                }
+//            }
+//        }
+//        threadPoolExecutor.submit(runnable);
+//    }
 
-    private void executeResponseCallback(Runnable runnable) {
-        if (null == threadPoolExecutor) {
-            synchronized (this) {
-                if (null == threadPoolExecutor) {
-                    threadPoolExecutor = ThreadPoolUtil.ThreadPool(RpcInvokerFactory.class.getName());
 
-                }
-            }
-        }
-        threadPoolExecutor.submit(runnable);
-    }
-
-
-    private void stopCallbackThreadPool() {
-        if (null != threadPoolExecutor) {
-            threadPoolExecutor.shutdown();
-        }
-    }
 }
