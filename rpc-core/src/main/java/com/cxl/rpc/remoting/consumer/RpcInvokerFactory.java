@@ -110,20 +110,6 @@ public class RpcInvokerFactory {
         futureResponsePool.remove(requestId);
     }
 
-//    //------------------response callback ThreadPool-------------------
-//    private ThreadPoolExecutor threadPoolExecutor = null;
-//
-//    private void execute(Runnable runnable) {
-//        if (null == threadPoolExecutor) {
-//            synchronized (this) {
-//                if (null == threadPoolExecutor) {
-//                    threadPoolExecutor = ThreadPoolUtil.ThreadPool(RpcInvokerFactory.class.getName());
-//
-//                }
-//            }
-//        }
-//        threadPoolExecutor.submit(runnable);
-//    }
 
 
 }

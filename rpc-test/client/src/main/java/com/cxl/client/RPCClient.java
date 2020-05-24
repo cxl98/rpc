@@ -32,6 +32,7 @@ public class RPCClient {
         RpcReferenceBean referenceBean = new RpcReferenceBean();
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");
+        referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         UserDTO say = (UserDTO) deom.say("123456", "123456");
         System.out.println(say);
@@ -43,6 +44,7 @@ public class RPCClient {
         referenceBean.setIface(Deom.class);
         referenceBean.setCallType(CallType.CALLBACK);
         referenceBean.setAddress("127.0.0.1:8888");
+        referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         RpcInvokeCallback.setCallback(new RpcInvokeCallback<UserDTO>() {
 

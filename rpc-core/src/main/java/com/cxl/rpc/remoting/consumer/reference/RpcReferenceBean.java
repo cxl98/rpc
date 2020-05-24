@@ -149,11 +149,8 @@ public class RpcReferenceBean {
         if (null == this.loadBalance) {
             throw new RpcException("rpc reference loadBalance missing.");
         }
-        if (null == this.iface) {
-            throw new RpcException("rpc reference iface missing.");
-        }
         if (0 >= this.timeout) {
-            this.timeout = 0;
+            this.timeout = 1000;
         }
 
         if (null == this.invokerFactory) {
@@ -175,7 +172,6 @@ public class RpcReferenceBean {
     //---------------------util-----------------
 
     public Object getObject() {
-        init();
         return Proxy.newProxyInstance(Thread.currentThread()
                 .getContextClassLoader(), new Class[]{iface}, (proxy, method, args) -> {
             //method param
@@ -195,10 +191,10 @@ public class RpcReferenceBean {
                 if (args[3] != null) {
                     String[] paramTypes_str = (String[]) args[3];
                     if (paramTypes_str.length > 0) {
-                        parameters = new Class[paramTypes_str.length];
+                        paramTypes = new Class[paramTypes_str.length];
 
                         for (int i = 0; i < paramTypes_str.length; i++) {
-                            parameters[i] = ClassUtil.resolveClass(paramTypes_str[i]);
+                            paramTypes[i] = ClassUtil.resolveClass(paramTypes_str[i]);
                         }
                     }
                 }
@@ -206,10 +202,8 @@ public class RpcReferenceBean {
                 version1 = (String) args[1];
                 methodName = (String) args[2];
                 parameterTypes = paramTypes;
-
                 parameters = (Object[]) args[4];
             }
-
             //filter method like "Object.toString()"
             if (className.equals(Object.class.getName())) {
                 LOGGER.info(">>>>>>>>>>>>>>>>>>>>>rpc proxy class-method not support [{}#{}]", className, methodName);
