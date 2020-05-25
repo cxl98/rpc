@@ -172,6 +172,7 @@ public class RpcReferenceBean {
     //---------------------util-----------------
 
     public Object getObject() {
+        init();
         return Proxy.newProxyInstance(Thread.currentThread()
                 .getContextClassLoader(), new Class[]{iface}, (proxy, method, args) -> {
             //method param

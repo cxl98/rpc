@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.net.common;
+package com.cxl.rpc.remoting.net;
 
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
-import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
+import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
+import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
 import com.cxl.rpc.remoting.net.params.BaseCallback;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.serialize.Serializer;

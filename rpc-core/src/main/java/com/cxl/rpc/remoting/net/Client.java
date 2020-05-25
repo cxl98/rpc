@@ -1,9 +1,7 @@
 package com.cxl.rpc.remoting.net;
 
-import com.cxl.rpc.remoting.invoker.reference.RpcReferenceBean;
+import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class Client {
 

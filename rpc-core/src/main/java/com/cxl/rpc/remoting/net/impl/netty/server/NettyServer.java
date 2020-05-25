@@ -13,6 +13,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -29,13 +31,13 @@ public class NettyServer extends Server {
     public void start(final RpcProviderFactory rpcProviderFactory) throws Exception {
         thread = new Thread(() -> {
             //param
-            final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.makeServerThreadPool(NettyServer.class.getSimpleName());
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workGroup = new NioEventLoopGroup();
+            final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.ThreadPool(NettyServer.class.getSimpleName());
+            EventLoopGroup bossGroup = new EpollEventLoopGroup();
+            EventLoopGroup workGroup = new EpollEventLoopGroup();
 
             try {
                 ServerBootstrap bootstrap = new ServerBootstrap();
-                bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+                bootstrap.group(bossGroup, workGroup).channel(EpollServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline()
@@ -56,11 +58,7 @@ public class NettyServer extends Server {
 
                 future.channel().closeFuture().sync();
             } catch (InterruptedException e) {
-                if (e instanceof InterruptedException){
-                    LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
-                }else{
-                    LOGGER.error(">>>>>>>>>>>>>rpc remoting server error.",e);
-                }
+                LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
             }finally {
                 try {
                     serverHandlerPool.shutdown();

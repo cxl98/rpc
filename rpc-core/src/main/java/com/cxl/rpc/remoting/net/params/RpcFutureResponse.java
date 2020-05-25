@@ -1,60 +1,117 @@
 package com.cxl.rpc.remoting.net.params;
 
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
-import com.cxl.rpc.remoting.invoker.call.RpcInvokeCallback;
+import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
+import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.util.RpcException;
+import com.cxl.rpc.util.ThreadPoolUtil;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class RpcFutureResponse implements Future<RpcResponse> {
-    private RpcInvokerFactory invokerFactory;
     //net data
     private RpcRequest request;
     private RpcResponse response;
 
-    //future lock
-    private boolean done = false;
-    private Object lock = new Object();
+    private Sync sync;
+    private List<RpcInvokeCallback> invokeCallbacks = new ArrayList<>();
+    private ThreadPoolExecutor threadPoolExecutor = null;
 
-    //callback , can be null
-    private RpcInvokeCallback invokeCallback;
+    private ReentrantLock locks = new ReentrantLock();
 
-    public RpcFutureResponse(final RpcInvokerFactory invokerFactory, RpcRequest request, RpcInvokeCallback invokeCallback) {
-        this.invokerFactory = invokerFactory;
+
+    public RpcFutureResponse(RpcRequest request) {
         this.request = request;
-        this.invokeCallback = invokeCallback;
-
-        //set-InvokerFuture
-        setInvokerFuture();
-    }
-
-    //-------------------------response pool-------------------------------
-
-    private void setInvokerFuture() {
-        this.invokerFactory.setInvokerFuture(request.getRequestId(), this);
-    }
-
-    public void removeInvokerFuture() {
-        this.invokerFactory.removeInvokerFuture(request.getRequestId());
-    }
-
-
-    //---------------------get-------------------
-
-    public RpcInvokeCallback getInvokeCallback() {
-        return invokeCallback;
+        this.sync = new Sync();
     }
 
     //-------------------for invoke back-------------------------
 
     public void setResponse(RpcResponse response) {
         this.response = response;
-        synchronized (lock) {
-            done = true;
-            lock.notifyAll();
+        sync.release(1);
+    }
+
+    public void call(RpcResponse rpcResponse) {
+        this.response = rpcResponse;
+        sync.release(1);
+        invokeCallbacks();
+
+    }
+
+    private void invokeCallbacks() {
+        locks.lock();
+        try {
+            for (final RpcInvokeCallback item : invokeCallbacks) {
+                run(item);
+            }
+        } finally {
+            locks.unlock();
+        }
+    }
+
+    public void addInvokeCallback(RpcInvokeCallback invokeCallback) {
+        locks.lock();
+        try {
+            if (isDone()) {
+                run(invokeCallback);
+            } else {
+                if (null != invokeCallbacks && invokeCallbacks.isEmpty()) {
+                    this.invokeCallbacks.add(invokeCallback);
+                }else {
+                    throw new RpcException(">>>>>>invokeCallbacks is null");
+                }
+            }
+        } finally {
+            locks.unlock();
+        }
+    }
+
+    public RpcInvokeCallback getInvokeCallback() {
+        if (null != invokeCallbacks) {
+            for (final RpcInvokeCallback item : invokeCallbacks) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+
+    private void run(RpcInvokeCallback invokeCallback) {
+        final RpcResponse res = this.response;
+        try {
+            execute(() -> {
+                if (null != res.getErrorMsg()) {
+                    invokeCallback.onFailure(new RpcException(res.getErrorMsg()));
+                } else {
+                    invokeCallback.onSuccess(res.getResult());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            stopCallbackThreadPool();
+        }
+    }
+
+    private void execute(Runnable runnable) {
+        if (null == threadPoolExecutor) {
+            synchronized (this) {
+                if (null == threadPoolExecutor) {
+                    threadPoolExecutor = ThreadPoolUtil.ThreadPool(RpcInvokerFactory.class.getName());
+
+                }
+            }
+        }
+        threadPoolExecutor.submit(runnable);
+    }
+
+    private void stopCallbackThreadPool() {
+        if (null != threadPoolExecutor) {
+            threadPoolExecutor.shutdown();
         }
     }
 
@@ -71,13 +128,14 @@ public class RpcFutureResponse implements Future<RpcResponse> {
 
     @Override
     public boolean isDone() {
-        return done;
+        return sync.isDone();
     }
 
     @Override
     public RpcResponse get() throws InterruptedException, ExecutionException {
+        sync.acquire(-1);
         try {
-            return get(-1, TimeUnit.MILLISECONDS);
+            return get(5000, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             throw new RpcException(e);
         }
@@ -85,53 +143,45 @@ public class RpcFutureResponse implements Future<RpcResponse> {
 
     @Override
     public RpcResponse get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        if (!done) {
-            synchronized (lock) {
-                try {
-                    if (timeout < 0) {
-                        lock.wait();
-                    } else {
-                        long timeoutMillis = (TimeUnit.MILLISECONDS == unit) ? timeout : TimeUnit.MILLISECONDS.convert(timeout, unit);
-                        lock.wait(timeoutMillis);
-                    }
-                } catch (InterruptedException e) {
-                    throw e;
-                }
+        boolean b = sync.tryAcquireNanos(-1, unit.toNanos(timeout));
+        if (b) {
+            if (null != this.response) {
+                return response;
+            } else {
+                return null;
             }
+        } else {
+            throw new RpcException("Timeout exception. Request :" + this.request);
         }
-        if (!done) {
-            throw new RpcException("rpc, request timeout at:" + System.currentTimeMillis() + ", request:" + request.toString());
-        }
-        return response;
     }
 
-//    static class Async extends AbstractQueuedSynchronizer{
-//        private static final long serialVersionUID=111L;
-//
-//        private final int done=1;
-//        private final int pending=0;
-//
-//        @Override
-//        protected boolean tryAcquire(int arg) {
-//            return getState()==done;
-//        }
-//
-//        @Override
-//        protected boolean tryRelease(int arg) {
-//            if (pending==getState()){
-//                if (compareAndSetState(pending,done)) {
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//            }else{
-//                return true;
-//            }
-//        }
-//
-//        public boolean isDone(){
-//            getState();
-//            return getState()==done;
-//        }
-//    }
+    static class Sync extends AbstractQueuedSynchronizer {
+        private static final long serialVersionUID = 111L;
+
+        private final int done = 1;
+        private final int pending = 0;
+
+        @Override
+        protected boolean tryAcquire(int arg) {
+            return getState() == done;
+        }
+
+        @Override
+        protected boolean tryRelease(int arg) {
+            if (pending == getState()) {
+                if (compareAndSetState(pending, done)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+
+        public boolean isDone() {
+            getState();
+            return getState() == done;
+        }
+    }
 }

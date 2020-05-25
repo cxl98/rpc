@@ -1,7 +1,7 @@
 package com.cxl.rpc.remoting.net.impl.netty.client;
 
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
-import com.cxl.rpc.remoting.net.common.ConnectClient;
+import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
+import com.cxl.rpc.remoting.net.ConnectClient;
 import com.cxl.rpc.remoting.net.impl.netty.codec.NettyDecoder;
 import com.cxl.rpc.remoting.net.impl.netty.codec.NettyEncoder;
 import com.cxl.rpc.remoting.net.params.Beat;
@@ -28,7 +28,6 @@ public class NettyConnerClient extends ConnectClient {
 
     @Override
     public void init(String address, final Serializer serializer, final RpcInvokerFactory rpcInvokerFactory) throws Exception {
-        final NettyConnerClient thisClient = this;
 
 
         this.group = new NioEventLoopGroup();
@@ -42,7 +41,7 @@ public class NettyConnerClient extends ConnectClient {
                                 .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL, TimeUnit.SECONDS))  // beat N, close if fail
                                 .addLast(new NettyEncoder(RpcRequest.class, serializer))
                                 .addLast(new NettyDecoder(RpcResponse.class, serializer))
-                                .addLast(new NettyClientHandler(rpcInvokerFactory, thisClient));
+                                .addLast(new NettyClientHandler(rpcInvokerFactory));
                     }
                 })
                 .option(ChannelOption.TCP_NODELAY, true)
