@@ -1,6 +1,6 @@
 package com.cxl.rpc.remoting.net.impl.netty_http.client;
 
-import com.cxl.rpc.remoting.invoker.RpcInvokerFactory;
+import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
 import com.cxl.rpc.remoting.net.params.Beat;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.serialize.Serializer;
