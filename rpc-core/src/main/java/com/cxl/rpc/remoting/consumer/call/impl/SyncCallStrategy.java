@@ -23,7 +23,6 @@ public class SyncCallStrategy extends CallBack {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-//            rpcFutureResponse.removeInvokerFuture();
             rpcInvokerFactory.removeInvokerFuture(request.getRequestId());
         }
         return null;

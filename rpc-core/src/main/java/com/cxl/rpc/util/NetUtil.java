@@ -10,9 +10,7 @@ public class NetUtil {
     private static final Logger LOGGER= LoggerFactory.getLogger(NetUtil.class);
     /**
      * find avaliable port
-     *
-     * @param defaultPort
-     * @return
+     * @param defaultPort 8888
      */
     public static int findAvailablePort(int defaultPort){
         int portTmp=defaultPort;
@@ -36,9 +34,7 @@ public class NetUtil {
 
     /**
      * check port used
-     *
-     * @param port
-     * @return
+     * @param port 端口
      */
     public static boolean isPortUsed(int port) {
         boolean used=false;

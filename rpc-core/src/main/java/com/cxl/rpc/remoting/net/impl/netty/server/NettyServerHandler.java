@@ -4,6 +4,7 @@ import com.cxl.rpc.remoting.net.params.Beat;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.util.ChannelUtil;
 import com.cxl.rpc.util.ThrowableUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -28,8 +29,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {
         //filter beat
         if (Beat.BEAT_ID.equals(msg.getRequestId())) {
-            LOGGER.debug(">>>>>>>>>>>>>>>>>>rpc provider netty server read beat-ping");
-            return;
+            LOGGER.info(">>>>>>>>>>>>>>>>>>rpc provider netty server read beat-ping");
+            ctx.writeAndFlush(msg);
         }
         //do invoke
         try {
@@ -57,10 +58,21 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent){
-            ctx.channel().close();
-            LOGGER.debug(">>>>>>>>>>>>>>>>>>>>rpc provider netty server close an old channel.");
+            LOGGER.info(">>>>>>>>>>>>>>>>>>>>rpc provider netty server close an old channel.");
         }else{
             super.userEventTriggered(ctx,evt);
         }
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        ChannelUtil.getChannels().setChannel(ctx.channel());
+        LOGGER.info("?>>>>>>>channel active"+ctx);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ChannelUtil.getChannels().remove();
+        LOGGER.info(">>>>>>>channel is not active"+ctx);
     }
 }

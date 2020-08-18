@@ -13,7 +13,6 @@ public class RpcLoadBalanceRandomStrategy extends RpcLoadBalance {
         String[] addressArr=addressSet.toArray(new String[addressSet.size()]);
 
         //random
-        String finalAddress=addressArr[random.nextInt(addressSet.size())];
-        return finalAddress;
+        return addressArr[random.nextInt(addressSet.size())];
     }
 }

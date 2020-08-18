@@ -225,6 +225,7 @@ public class RpcReferenceBean {
                         address = finalAddress;
                     } else {
                         finalAddress = loadBalance.rpcLoadBalance.route(serviceKey, addressSet);
+                        address=finalAddress;
                     }
                 }
             }

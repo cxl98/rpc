@@ -7,25 +7,6 @@ import com.cxl.rpc.remoting.net.params.RpcRequest;
 public class FutureCallStrategy extends CallBack {
 
 
-//    @Override
-//    public RpcResponse export(RpcRequest request, RpcReferenceBean rpcReferenceBean) {
-//        RpcInvokerFactory invokerFactory = rpcReferenceBean.getInvokerFactory();
-//        rpcFutureResponse = new RpcFutureResponse(invokerFactory, request);
-//
-//
-//        Client client = rpcReferenceBean.getClient();
-//        String address = rpcReferenceBean.getAddress();
-//
-//    }
-
-//    @Override
-//    public RpcResponse export() {
-//        RpcInvokeFuture rpcInvokeFuture = new RpcInvokeFuture(rpcFutureResponse);
-//        RpcInvokeFuture.setFuture(rpcInvokeFuture);
-//        return null;
-//    }
-//
-
     @Override
     public Object export(RpcRequest request) {
         try {

@@ -4,17 +4,10 @@ import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.util.RpcException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class JacksonSerializer extends Serializer {
     private static final ObjectMapper objMapper = new ObjectMapper();

@@ -4,7 +4,6 @@ import com.cxl.rpc.registry.ServiceRegistry;
 import com.cxl.rpc.util.RpcException;
 import com.cxl.rpc.util.ZkClientUtil;
 import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

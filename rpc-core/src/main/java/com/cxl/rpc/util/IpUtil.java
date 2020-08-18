@@ -122,7 +122,7 @@ public class IpUtil {
     /**
      * get ip:port
      *
-     * @param port
+     * @param port 端口
      * @return String
      */
     public static String getIpPort(int port){

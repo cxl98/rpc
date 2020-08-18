@@ -13,5 +13,7 @@ public class DateTest {
         System.out.println("date  "+date);
         System.out.println(s);
         System.out.println(format);
+        Date date2=new Date();
+        System.out.println(date2.getTime());
     }
 }

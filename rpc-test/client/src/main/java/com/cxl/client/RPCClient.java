@@ -7,6 +7,7 @@ import com.cxl.rpc.remoting.consumer.call.CallType;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.remoting.net.NetEnum;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -19,27 +20,24 @@ public class RPCClient {
 //        testOneWay();
 //        testFuture();
 
+//        TimeUnit.SECONDS.sleep(2);
 
-        TimeUnit.SECONDS.sleep(2);
 
-
-        RpcInvokerFactory.getInstance().stop();
+//        RpcInvokerFactory.getInstance().stop();
     }
 
-    private static void testSYNC() {
-//        Deom deom= (Deom) new RpcReferenceBean(NetEnum.NETTY, Serializer.SerializerEnum.PROTOSTUFF.getSerializer(), CallType.SYNC, LoadBalance.ROUND,Deom.class,null,500,"127.0.0.1:8888",null,null,null).getObject();
-//        Deom deom= (Deom) new RpcReferenceBean();
+    private static void testSYNC() throws InterruptedException {
         RpcReferenceBean referenceBean = new RpcReferenceBean();
+        referenceBean.setNetType(NetEnum.NETTY);
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
-        UserDTO say = (UserDTO) deom.say("123456", "123456");
+        UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");
         System.out.println(say);
-
     }
 
-    private static void testCALLBACK() {
+    private static void testCALLBACK() throws InterruptedException {
         RpcReferenceBean referenceBean = new RpcReferenceBean();
         referenceBean.setIface(Deom.class);
         referenceBean.setCallType(CallType.CALLBACK);
@@ -75,7 +73,7 @@ public class RPCClient {
         System.out.println(userDTO);
     }
 
-    private static void testOneWay() {
+    private static void testOneWay() throws InterruptedException {
         RpcReferenceBean referenceBean = new RpcReferenceBean();
         referenceBean.setIface(Deom.class);
         referenceBean.setCallType(CallType.ONEWAY);

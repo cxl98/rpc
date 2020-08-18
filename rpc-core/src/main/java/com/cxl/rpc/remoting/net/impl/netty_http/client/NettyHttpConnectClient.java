@@ -31,20 +31,22 @@ public class NettyHttpConnectClient extends ConnectClient {
     public void init(String address, Serializer serializer, RpcInvokerFactory rpcInvokerFactory) throws Exception {
         final NettyHttpConnectClient connectClient=this;
         if (!address.toLowerCase().startsWith("http")) {
-            address="http://"+address;
+            address="https://"+address;
         }
         this.address=address;
         URL url=new URL(address);
+        System.out.println("url"+url);
         this.host=url.getHost();
+        System.out.println("host"+host);
         int port =url.getPort()>-1?url.getPort():80;
-
+        System.out.println("port"+port);
         this.group=new NioEventLoopGroup();
         Bootstrap bootstrap=new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        channel.pipeline()
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline()
                                 .addLast(new IdleStateHandler(0,0, Beat.BEAT_INTERVAL, TimeUnit.SECONDS))
                                 .addLast(new HttpClientCodec())
                                 .addLast(new HttpObjectAggregator(5*1024*1024))

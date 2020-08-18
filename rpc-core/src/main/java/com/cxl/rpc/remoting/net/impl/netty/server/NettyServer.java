@@ -25,11 +25,11 @@ import java.util.concurrent.TimeUnit;
 
 public class NettyServer extends Server {
 
-    private Thread thread;
+
 
     @Override
     public void start(final RpcProviderFactory rpcProviderFactory) throws Exception {
-        thread = new Thread(() -> {
+
             //param
             final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.ThreadPool(NettyServer.class.getSimpleName());
             EventLoopGroup bossGroup = new EpollEventLoopGroup();
@@ -41,7 +41,7 @@ public class NettyServer extends Server {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline()
-                                .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL * 3, TimeUnit.SECONDS))
+                                .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL*3, TimeUnit.SECONDS))
                                 .addLast(new NettyDecoder(RpcRequest.class, rpcProviderFactory.getSerializer()))
                                 .addLast(new NettyEncoder(RpcResponse.class, rpcProviderFactory.getSerializer()))
                                 .addLast(new NettyServerHandler(rpcProviderFactory, serverHandlerPool));
@@ -59,27 +59,16 @@ public class NettyServer extends Server {
                 future.channel().closeFuture().sync();
             } catch (InterruptedException e) {
                 LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
+
             }finally {
-                try {
-                    serverHandlerPool.shutdown();
-                    workGroup.shutdownGracefully();
-                    bossGroup.shutdownGracefully();
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(),e);
-                }
+                serverHandlerPool.shutdown();
+                workGroup.shutdownGracefully();
+                bossGroup.shutdownGracefully();
             }
-        });
-        thread.setDaemon(true);
-        thread.start();
     }
 
     @Override
-    public void stop() throws Exception {
-        //destroy server thread
-        if (thread != null&& thread.isAlive()) {
-            thread.interrupt();
-        }
-
+    public void stop() {
         //on stop
         onStop();
         LOGGER.info(">>>>>>>>>>> xxl-rpc remoting server destroy success.");
