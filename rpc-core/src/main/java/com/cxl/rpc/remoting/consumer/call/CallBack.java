@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 
 public abstract class CallBack {
 
-    protected static final Logger LOGGER= LoggerFactory.getLogger(CallBack.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(CallBack.class);
     protected RpcFutureResponse rpcFutureResponse;
     protected RpcInvokerFactory rpcInvokerFactory;
     protected Client client;
     protected String address;
 
     public Object export(RpcRequest request, RpcReferenceBean rpcReferenceBean) {
-         rpcInvokerFactory = rpcReferenceBean.getInvokerFactory();
+        rpcInvokerFactory = rpcReferenceBean.getInvokerFactory();
         rpcFutureResponse = new RpcFutureResponse(request);
-        rpcInvokerFactory.setInvokerFuture(request.getRequestId(),rpcFutureResponse);
+        rpcInvokerFactory.setInvokerFuture(request.getRequestId(), rpcFutureResponse);
         client = rpcReferenceBean.getClient();
         address = rpcReferenceBean.getAddress();
         try {

@@ -8,26 +8,25 @@ import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
 import com.cxl.rpc.remoting.net.NetEnum;
+import com.cxl.rpc.remoting.net.params.RpcResponse;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class RPCClient {
+    static RpcReferenceBean referenceBean=new RpcReferenceBean();
     public static void main(String[] args) throws Exception {
-        testCALLBACK();
-//        testSYNC();
+//        testCALLBACK();
+        testSYNC();
 //        testOneWay();
 //        testFuture();
-
 //        TimeUnit.SECONDS.sleep(2);
-
 
 //        RpcInvokerFactory.getInstance().stop();
     }
 
     private static void testSYNC() throws InterruptedException {
-        RpcReferenceBean referenceBean = new RpcReferenceBean();
         referenceBean.setNetType(NetEnum.NETTY);
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");

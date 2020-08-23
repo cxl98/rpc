@@ -4,6 +4,7 @@ import com.cxl.api.Deom;
 
 import com.cxl.api.dto.UserDTO;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.remoting.provider.RpcProviderFactory;
 import com.cxl.rpc.util.ChannelUtil;
 import com.cxl.rpc.util.DateUtil;
 import io.netty.channel.Channel;
@@ -24,7 +25,6 @@ public class DemoImpl implements Deom {
         UserDTO user=new UserDTO(name,password);
         LOGGER.info(user.toString());
         Channel channel = ChannelUtil.getChannels().getChannel();
-        list.add(channel);
         for (Channel item: list) {
             if (channel==item){
                 return user;
@@ -34,8 +34,8 @@ public class DemoImpl implements Deom {
                 rpcResponse.setResult(user);
                 item.writeAndFlush(rpcResponse).sync();
             }
-
         }
+        list.add(channel);
         return user;
     }
 }

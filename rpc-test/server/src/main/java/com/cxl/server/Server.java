@@ -22,7 +22,6 @@ public class Server {
         factory.addService(Deom.class.getName(),null,new DemoImpl());
 
 
-
         factory.start();
 
     }

@@ -30,7 +30,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         //filter beat
         if (Beat.BEAT_ID.equals(msg.getRequestId())) {
             LOGGER.info(">>>>>>>>>>>>>>>>>>rpc provider netty server read beat-ping");
-            ctx.writeAndFlush(msg);
         }
         //do invoke
         try {

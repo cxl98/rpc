@@ -32,6 +32,8 @@ public class RpcInvokerFactory {
     //class.for name
     private Map<String, String> serviceRegistryParam;
 
+    private static RpcResponse response;
+
 
     private RpcInvokerFactory() {
     }
@@ -97,6 +99,7 @@ public class RpcInvokerFactory {
         //get
         final RpcFutureResponse futureResponse = futureResponsePool.get(requestId);
         if (futureResponse == null) {
+            response=rpcResponse;
             return;
         }
         if (futureResponse.getInvokeCallback() != null) {
@@ -110,6 +113,7 @@ public class RpcInvokerFactory {
         futureResponsePool.remove(requestId);
     }
 
-
-
+    public RpcResponse getResponse() {
+        return response;
+    }
 }

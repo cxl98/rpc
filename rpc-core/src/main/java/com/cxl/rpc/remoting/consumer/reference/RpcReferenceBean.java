@@ -165,14 +165,13 @@ public class RpcReferenceBean {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RpcException(e);
         }
-//        return this;
     }
 
 
     //---------------------util-----------------
 
     public Object getObject() {
-        init();
+
         return Proxy.newProxyInstance(Thread.currentThread()
                 .getContextClassLoader(), new Class[]{iface}, (proxy, method, args) -> {
             //method param
