@@ -85,17 +85,17 @@ public class RpcRequest implements Serializable {
         this.version = version;
     }
 
-    @Override
-    public String toString() {
-        return "RpcRequest{" +
-                "requestId='" + requestId + '\'' +
-                ", createMillisTime=" + createMillisTime +
-                ", accessToken='" + accessToken + '\'' +
-                ", className='" + className + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", parameterTypes=" + Arrays.toString(parameterTypes) +
-                ", parameters=" + Arrays.toString(parameters) +
-                ", version='" + version + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "RpcRequest{" +
+//                "requestId='" + requestId + '\'' +
+//                ", createMillisTime=" + createMillisTime +
+//                ", accessToken='" + accessToken + '\'' +
+//                ", className='" + className + '\'' +
+//                ", methodName='" + methodName + '\'' +
+//                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+//                ", parameters=" + Arrays.toString(parameters) +
+//                ", version='" + version + '\'' +
+//                '}';
+//    }
 }

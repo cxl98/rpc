@@ -6,11 +6,14 @@ import com.cxl.rpc.remoting.net.params.BaseCallback;
 import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.remoting.provider.annotation.RpcService;
+import com.cxl.rpc.util.AbstractPush;
 import com.cxl.rpc.util.RpcException;
 import com.cxl.rpc.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +34,6 @@ public class RpcInvokerFactory {
     private Class<? extends ServiceRegistry> serviceRegistryClass;
     //class.for name
     private Map<String, String> serviceRegistryParam;
-
-    private static RpcResponse response;
 
 
     private RpcInvokerFactory() {
@@ -99,21 +100,25 @@ public class RpcInvokerFactory {
         //get
         final RpcFutureResponse futureResponse = futureResponsePool.get(requestId);
         if (futureResponse == null) {
-            response=rpcResponse;
-            return;
+            AbstractPush result = (AbstractPush)rpcResponse.getResult();
+            try {
+                Method sendMsg = result.getClass().getDeclaredMethod("sendMsg",RpcResponse.class);
+//                sendMsg.setAccessible(true);
+                sendMsg.invoke(result,rpcResponse);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }else{
+            if (futureResponse.getInvokeCallback() != null) {
+                //回调
+                futureResponse.call(rpcResponse);
+            } else {
+                // 其他回调类型
+                futureResponse.setResponse(rpcResponse);
+            }
+            //删除该实例
+            futureResponsePool.remove(requestId);
         }
-        if (futureResponse.getInvokeCallback() != null) {
-            //回调
-            futureResponse.call(rpcResponse);
-        } else {
-            // 其他回调类型
-            futureResponse.setResponse(rpcResponse);
-        }
-        //删除该实例
-        futureResponsePool.remove(requestId);
     }
 
-    public RpcResponse getResponse() {
-        return response;
-    }
 }

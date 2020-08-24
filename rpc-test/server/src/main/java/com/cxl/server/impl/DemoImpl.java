@@ -1,19 +1,13 @@
 package com.cxl.server.impl;
 
 import com.cxl.api.Deom;
-
 import com.cxl.api.dto.UserDTO;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
 import com.cxl.rpc.util.ChannelUtil;
-import com.cxl.rpc.util.DateUtil;
 import io.netty.channel.Channel;
-import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -23,7 +17,6 @@ public class DemoImpl implements Deom {
     @Override
     public Object say(String name, String password) throws InterruptedException {
         UserDTO user=new UserDTO(name,password);
-        LOGGER.info(user.toString());
         Channel channel = ChannelUtil.getChannels().getChannel();
         for (Channel item: list) {
             if (channel==item){

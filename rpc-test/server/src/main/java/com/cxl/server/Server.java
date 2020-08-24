@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class Server {
     public static void main(String[] args) throws Exception {
         RpcProviderFactory factory=new RpcProviderFactory();
-        factory.setNetType(NetEnum.NETTY);
 //        factory.setServiceRegistryClass(LocalRegistry.class);
 //        factory.initConfig(NetEnum.NETTY, Serializer.SerializerEnum.JACKSON.getSerializer(),-1,-1,null,8008,null,null,null);
 

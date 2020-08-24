@@ -23,6 +23,7 @@ public class NettyDecoder extends ByteToMessageDecoder {
         }
         in.markReaderIndex();
         int dataLength=in.readInt();
+        System.out.println("dataLength "+dataLength);
         if (dataLength<0){
             ctx.close();
         }
@@ -35,6 +36,7 @@ public class NettyDecoder extends ByteToMessageDecoder {
         in.readBytes(data);
 
         Object obj=serializer.deserializer(data,genericClass);
+        System.out.println("rpc object netty decoder"+obj);
         out.add(obj);
     }
 }

@@ -4,6 +4,7 @@ import com.cxl.rpc.registry.ServiceRegistry;
 import com.cxl.rpc.registry.impl.LocalRegistry;
 import com.cxl.rpc.remoting.net.NetEnum;
 import com.cxl.rpc.remoting.net.Server;
+import com.cxl.rpc.remoting.net.impl.netty.server.NettyServer;
 import com.cxl.rpc.remoting.net.params.BaseCallback;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
@@ -25,7 +26,7 @@ public class RpcProviderFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcProviderFactory.class);
 
     //------------------------config--------------------------
-    private NetEnum netType = NetEnum.NETTY;
+    private Class<? extends Server> serverClass= NettyServer.class;
     private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
 
     private int corePoolSize = 60;
@@ -38,12 +39,12 @@ public class RpcProviderFactory {
     private Class<? extends ServiceRegistry> serviceRegistryClass;
     private Map<String, String> serviceRegistryParam;
 
-    public void setNetType(NetEnum netType) {
-        this.netType = netType;
+    public Class<? extends Server> getServerClass() {
+        return serverClass;
     }
 
-    public NetEnum getNetType() {
-        return netType;
+    public void setServerClass(Class<? extends Server> serverClass) {
+        this.serverClass = serverClass;
     }
 
     public void setSerializer(Serializer serializer) {
@@ -123,7 +124,7 @@ public class RpcProviderFactory {
         }
         //start server
         serviceAddress = IpUtil.getIpPort(this.ip, port);
-        server = netType.serverClass.newInstance();
+        server = serverClass.newInstance();
         server.setStartedCallback(new BaseCallback() {
             @Override
             public void run() throws Exception {

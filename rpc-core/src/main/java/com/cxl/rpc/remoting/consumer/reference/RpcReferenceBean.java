@@ -8,6 +8,7 @@ import com.cxl.rpc.remoting.consumer.generic.RpcGenericService;
 import com.cxl.rpc.remoting.consumer.route.LoadBalance;
 import com.cxl.rpc.remoting.net.Client;
 import com.cxl.rpc.remoting.net.NetEnum;
+import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.provider.RpcProviderFactory;
 import com.cxl.rpc.serialize.Serializer;
@@ -24,7 +25,7 @@ public class RpcReferenceBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcReferenceBean.class);
 
     //-------------------config-------------------
-    private NetEnum netType = NetEnum.NETTY;
+    private Class<? extends Client> clientClass =NettyClient.class;
     private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
     private CallType callType = CallType.SYNC;
     private LoadBalance loadBalance = LoadBalance.ROUND;
@@ -43,12 +44,12 @@ public class RpcReferenceBean {
 
     private CallBackFactory callBackFactory;
 
-    public NetEnum getNetType() {
-        return netType;
+    public Class<? extends Client> getClientClass() {
+        return clientClass;
     }
 
-    public void setNetType(NetEnum netType) {
-        this.netType = netType;
+    public void setClientClass(Class<? extends Client> clientClass) {
+        this.clientClass = clientClass;
     }
 
     public void setSerializer(Serializer serializer) {
@@ -137,7 +138,7 @@ public class RpcReferenceBean {
     }
 
     public void init() {
-        if (null == this.netType) {
+        if (null == this.clientClass) {
             throw new RpcException("rpc reference netType missing.");
         }
         if (null == this.serializer) {
@@ -160,7 +161,7 @@ public class RpcReferenceBean {
             callBackFactory = CallBackFactory.getInstance();
         }
         try {
-            client = netType.clientClass.newInstance();
+            client = clientClass.newInstance();
             client.init(this);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RpcException(e);
