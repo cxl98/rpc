@@ -18,17 +18,16 @@ public class DemoImpl implements Deom {
     public Object say(String name, String password) throws InterruptedException {
         UserDTO user=new UserDTO(name,password);
         Channel channel = ChannelUtil.getChannels().getChannel();
+        list.add(channel);
         for (Channel item: list) {
-            if (channel==item){
-                return user;
-            }else{
+            if (channel!=item){
                 RpcResponse rpcResponse=new RpcResponse();
                 rpcResponse.setRequestId(user.getName());
                 rpcResponse.setResult(user);
                 item.writeAndFlush(rpcResponse).sync();
             }
         }
-        list.add(channel);
-        return user;
+        System.out.println("xxxx");
+      return user;
     }
 }

@@ -13,11 +13,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class RpcFutureResponse implements Future<RpcResponse> {
     //net data
-    private final RpcRequest request;
+    private  RpcRequest request;
     private RpcResponse response;
 
-    private final Sync sync;
-    private final List<RpcInvokeCallback> invokeCallbacks = new ArrayList<>();
+    private  Sync sync;
+    private  List<RpcInvokeCallback> invokeCallbacks = new ArrayList<>();
     private ThreadPoolExecutor threadPoolExecutor = null;
 
     private ReentrantLock locks = new ReentrantLock();

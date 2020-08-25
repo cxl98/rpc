@@ -1,11 +1,11 @@
 package com.cxl.api.dto;
 
 import com.cxl.rpc.remoting.net.params.RpcResponse;
-import com.cxl.rpc.util.AbstractPush;
+import com.cxl.rpc.util.Push;
 
 import java.io.Serializable;
 
-public class UserDTO extends AbstractPush implements Serializable {
+public class UserDTO implements Push,Serializable {
     private static final long serialVersionUID = 123L;
     private String name;
     private String word;
@@ -42,8 +42,9 @@ public class UserDTO extends AbstractPush implements Serializable {
                 '}';
     }
 
+
     @Override
-    public void sendMsg(RpcResponse msg) {
-        System.out.println(msg.getResult());
+    public void exec(Object obj) {
+        System.out.println(obj);
     }
 }

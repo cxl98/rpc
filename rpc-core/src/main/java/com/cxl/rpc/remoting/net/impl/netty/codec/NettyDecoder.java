@@ -36,7 +36,6 @@ public class NettyDecoder extends ByteToMessageDecoder {
         in.readBytes(data);
 
         Object obj=serializer.deserializer(data,genericClass);
-        System.out.println("rpc object netty decoder"+obj);
         out.add(obj);
     }
 }

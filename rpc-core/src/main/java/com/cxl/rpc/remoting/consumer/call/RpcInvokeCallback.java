@@ -14,6 +14,7 @@ public abstract class RpcInvokeCallback<T> {
      */
     public static RpcInvokeCallback getCallback(){
         RpcInvokeCallback invokeCallback=threadInvokerFuture.get();
+        removeCallback();
         return invokeCallback;
     }
 

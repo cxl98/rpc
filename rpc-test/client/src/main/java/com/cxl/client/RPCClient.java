@@ -29,7 +29,6 @@ public class RPCClient {
     private static void testSYNC() throws InterruptedException {
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");
-        referenceBean.setTimeout(1000000000);
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");

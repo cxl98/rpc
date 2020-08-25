@@ -3,21 +3,19 @@ package com.cxl.rpc.remoting.consumer;
 import com.cxl.rpc.registry.ServiceRegistry;
 import com.cxl.rpc.registry.impl.LocalRegistry;
 import com.cxl.rpc.remoting.net.params.BaseCallback;
+import com.cxl.rpc.remoting.net.params.Beat;
 import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
 import com.cxl.rpc.remoting.net.params.RpcResponse;
-import com.cxl.rpc.remoting.provider.annotation.RpcService;
-import com.cxl.rpc.util.AbstractPush;
-import com.cxl.rpc.util.RpcException;
-import com.cxl.rpc.util.ThreadPoolUtil;
+import com.cxl.rpc.util.ProxyPush;
+import com.cxl.rpc.util.Push;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+
 public class RpcInvokerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcInvokerFactory.class);
@@ -100,13 +98,10 @@ public class RpcInvokerFactory {
         //get
         final RpcFutureResponse futureResponse = futureResponsePool.get(requestId);
         if (futureResponse == null) {
-            AbstractPush result = (AbstractPush)rpcResponse.getResult();
-            try {
-                Method sendMsg = result.getClass().getDeclaredMethod("sendMsg",RpcResponse.class);
-//                sendMsg.setAccessible(true);
-                sendMsg.invoke(result,rpcResponse);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
+
+            if (!Beat.BEAT_ID.equals(requestId)){
+                Push result =(Push) rpcResponse.getResult();
+                ProxyPush.PUSH.execInvoke(result);
             }
         }else{
             if (futureResponse.getInvokeCallback() != null) {
@@ -119,6 +114,7 @@ public class RpcInvokerFactory {
             //删除该实例
             futureResponsePool.remove(requestId);
         }
+
     }
 
 }

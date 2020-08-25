@@ -15,8 +15,11 @@ public class FutureCallStrategy extends CallBack {
             client.asyncSend(address, request);
         } catch (Exception e) {
             LOGGER.info(">>>>>rpc,invoke error,address:{},RpcRequest:{}",address,request);
-            rpcInvokerFactory.removeInvokerFuture(request.getRequestId());
             e.printStackTrace();
+        }finally {
+            if (null!=rpcInvokerFactory){
+                rpcInvokerFactory.removeInvokerFuture(request.getRequestId());
+            }
         }
         return null;
     }
