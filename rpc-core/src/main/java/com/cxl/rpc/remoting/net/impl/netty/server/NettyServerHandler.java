@@ -67,7 +67,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ChannelUtil.getChannels().setChannel(ctx.channel());
-        LOGGER.info("?>>>>>>>channel active"+ctx);
+        LOGGER.info(">>>>>>>channel active"+ctx);
     }
 
     @Override

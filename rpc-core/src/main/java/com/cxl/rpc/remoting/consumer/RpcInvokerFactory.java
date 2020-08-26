@@ -20,7 +20,7 @@ public class RpcInvokerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcInvokerFactory.class);
 
-    // ---------------------- default instance ----------------------
+    // ----------------------  instance ----------------------
 
     private static volatile RpcInvokerFactory instance = new RpcInvokerFactory(LocalRegistry.class, null);
 
@@ -41,7 +41,7 @@ public class RpcInvokerFactory {
         this.serviceRegistryClass = serviceRegistryClass;
         this.serviceRegistryParam = serviceRegistryParam;
     }
-    //---------------------start / stop--------------------
+    //---------------------注册中心start / stop--------------------
 
     public void start() throws Exception {
         //start registry
@@ -98,7 +98,8 @@ public class RpcInvokerFactory {
         //get
         final RpcFutureResponse futureResponse = futureResponsePool.get(requestId);
         if (futureResponse == null) {
-
+//            Beat.BEAT_ID!=requestId 有bug
+            //做推送的用的
             if (!Beat.BEAT_ID.equals(requestId)){
                 Push result =(Push) rpcResponse.getResult();
                 ProxyPush.PUSH.execInvoke(result);

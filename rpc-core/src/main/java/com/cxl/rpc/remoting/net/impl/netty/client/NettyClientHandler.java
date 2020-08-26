@@ -21,7 +21,6 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse>
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) {
-        System.out.println("channelRead0  "+msg.getRequestId());
         invokerFactory.notifyInvokerFuture(msg.getRequestId(),msg);
     }
 

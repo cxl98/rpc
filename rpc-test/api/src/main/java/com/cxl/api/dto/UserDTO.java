@@ -1,6 +1,5 @@
 package com.cxl.api.dto;
 
-import com.cxl.rpc.remoting.net.params.RpcResponse;
 import com.cxl.rpc.util.Push;
 
 import java.io.Serializable;

@@ -27,7 +27,6 @@ public class DemoImpl implements Deom {
                 item.writeAndFlush(rpcResponse).sync();
             }
         }
-        System.out.println("xxxx");
       return user;
     }
 }
