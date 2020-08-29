@@ -2,17 +2,14 @@ package com.cxl.client;
 
 import com.cxl.api.Deom;
 import com.cxl.api.dto.UserDTO;
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
 import com.cxl.rpc.remoting.consumer.call.CallType;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.net.NetEnum;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.util.ProxyPush;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class RPCClient {
     static RpcReferenceBean referenceBean=new RpcReferenceBean();
@@ -32,6 +29,7 @@ public class RPCClient {
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");
+        ProxyPush.getInstance().setClassName(new PushImpl());
         System.out.println(say);
     }
 

@@ -101,8 +101,7 @@ public class RpcInvokerFactory {
 //            Beat.BEAT_ID!=requestId 有bug
             //做推送的用的
             if (!Beat.BEAT_ID.equals(requestId)){
-                Push result =(Push) rpcResponse.getResult();
-                ProxyPush.PUSH.execInvoke(result);
+                ProxyPush.getInstance().exec(rpcResponse.getResult());
             }
         }else{
             if (futureResponse.getInvokeCallback() != null) {

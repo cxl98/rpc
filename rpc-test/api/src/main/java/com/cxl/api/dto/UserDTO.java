@@ -1,11 +1,11 @@
 package com.cxl.api.dto;
 
 import com.cxl.rpc.util.Push;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 import java.io.Serializable;
 
-public class UserDTO implements Push,Serializable {
-    private static final long serialVersionUID = 123L;
+public class UserDTO implements Serializable {
     private String name;
     private String word;
 
@@ -39,11 +39,5 @@ public class UserDTO implements Push,Serializable {
                 "name='" + name + '\'' +
                 ", word='" + word + '\'' +
                 '}';
-    }
-
-
-    @Override
-    public void exec(Object obj) {
-        System.out.println(obj);
     }
 }
