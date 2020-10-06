@@ -6,6 +6,7 @@ import com.cxl.rpc.remoting.consumer.call.CallType;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.remoting.net.impl.netty_http.client.NettyHttpClient;
 import com.cxl.rpc.util.ProxyPush;
 
 import java.util.concurrent.ExecutionException;
