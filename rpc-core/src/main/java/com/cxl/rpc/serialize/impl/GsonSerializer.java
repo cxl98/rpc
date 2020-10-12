@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 
 public class GsonSerializer extends Serializer {
 
-    private Gson gson;
+    private Gson gson=new Gson();
     @SuppressWarnings("unchecked")
     @Override
     public <T> byte[] serializer(T obj) {

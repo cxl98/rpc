@@ -6,6 +6,7 @@ import com.cxl.rpc.remoting.consumer.call.CallType;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
 import com.cxl.rpc.remoting.consumer.call.RpcInvokeFuture;
 import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.util.ProxyPush;
 
 import java.util.concurrent.ExecutionException;
@@ -26,6 +27,7 @@ public class RPCClient {
     private static void testSYNC() throws InterruptedException {
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");
+        referenceBean.setSerializer(Serializer.SerializerEnum.JACKSON.getSerializer());
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");

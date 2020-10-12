@@ -41,7 +41,7 @@ public class NettyServer extends Server {
                 ServerBootstrap bootstrap = new ServerBootstrap();
                 bootstrap.group(bossGroup, workGroup).channel(EpollServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel channel) throws Exception {
+                    protected void initChannel(SocketChannel channel) {
                         channel.pipeline()
                                 .addLast(new IdleStateHandler(0, 0, Beat.BEAT_INTERVAL*3, TimeUnit.SECONDS))
                                 .addLast(new NettyDecoder(RpcRequest.class, rpcProviderFactory.getSerializer()))

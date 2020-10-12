@@ -7,7 +7,6 @@ import com.cxl.rpc.remoting.consumer.call.CallType;
 import com.cxl.rpc.remoting.consumer.generic.RpcGenericService;
 import com.cxl.rpc.remoting.consumer.route.LoadBalance;
 import com.cxl.rpc.remoting.net.Client;
-import com.cxl.rpc.remoting.net.NetEnum;
 import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
 import com.cxl.rpc.remoting.net.params.RpcRequest;
 import com.cxl.rpc.remoting.provider.RpcProviderFactory;
