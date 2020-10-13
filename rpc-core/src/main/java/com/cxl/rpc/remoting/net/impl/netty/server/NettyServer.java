@@ -50,18 +50,13 @@ public class NettyServer extends Server {
                     }
                 }).childOption(ChannelOption.TCP_NODELAY, true)
                         .childOption(ChannelOption.SO_KEEPALIVE, true);
-
                 //bind
-
                 ChannelFuture future = bootstrap.bind(rpcProviderFactory.getPort()).sync();
-
                 LOGGER.info(">>>>>>>>>>>>rpc remoting server start success , netType = {} , port ={}",NettyServer.class.getName(),rpcProviderFactory.getPort());
                 onStarted();
-
                 future.channel().closeFuture().sync();
             } catch (InterruptedException e) {
                 LOGGER.info(">>>>>>>>>>>>>>>>>rpc remoting server stop");
-
             }finally {
                 serverHandlerPool.shutdown();
                 workGroup.shutdownGracefully();
