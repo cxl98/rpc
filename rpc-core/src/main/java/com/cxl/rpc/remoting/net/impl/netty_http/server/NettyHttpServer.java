@@ -36,7 +36,7 @@ public class NettyHttpServer extends Server {
                     }).childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(rpcProviderFactory.getPort()).sync();
 
-            LOGGER.info(">>>>>>>>>>> xxl-rpc remoting server start success, nettype = {}, port = {}", NettyHttpServer.class.getName(), rpcProviderFactory.getPort());
+            LOGGER.info(">>>>>>>>>>> rpc remoting server start success, nettype = {}, port = {}", NettyHttpServer.class.getName(), rpcProviderFactory.getPort());
 
             onStarted();
 

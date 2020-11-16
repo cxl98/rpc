@@ -21,6 +21,7 @@ public class ProtostuffSerializer extends Serializer {
     private static <T> Schema<T> getSchema(Class<T> clazz){
         return (Schema<T>) cachedSchema.computeIfAbsent(clazz,RuntimeSchema::createFrom);
     }
+    @Override
     @SuppressWarnings("unchecked")
     public <T> byte[] serializer(T obj) {
 
@@ -39,6 +40,7 @@ public class ProtostuffSerializer extends Serializer {
         }
     }
 
+    @Override
     public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
         try {
             T message=OBJENESIS.newInstance(clazz);

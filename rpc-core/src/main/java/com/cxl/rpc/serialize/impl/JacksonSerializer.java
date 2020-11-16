@@ -24,6 +24,7 @@ public class JacksonSerializer extends Serializer {
      * @param <T>
      * @return
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> byte[] serializer(T obj) {
 
@@ -45,6 +46,7 @@ public class JacksonSerializer extends Serializer {
      * @param <T>
      * @return
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
         T obj = null;
