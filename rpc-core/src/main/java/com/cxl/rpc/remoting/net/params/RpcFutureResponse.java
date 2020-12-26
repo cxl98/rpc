@@ -28,7 +28,7 @@ public class RpcFutureResponse implements Future<RpcResponse> {
         this.sync = new Sync();
     }
 
-    //-------------------for invoke back-------------------------
+    //-------------------for invoke back(回调)-------------------------
 
     public void setResponse(RpcResponse response) {
         this.response = response;
