@@ -28,7 +28,7 @@
         <objenesis.version>3.0.1</objenesis.version>
         <jackson.version>2.10.0</jackson.version>
         <fastjson.version>1.2.</fastjson.version>
-        <spring.version>4.3.25.RELEASE</spring.version>
+        <spring.version>4.3.14.RELEASE</spring.version>
         <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
     </properties>
     <build>
