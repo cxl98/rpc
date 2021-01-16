@@ -186,7 +186,7 @@ public class RpcReferenceBean {
 
 
             //filter for generic
-            if (className.equals(RpcGenericService.class.getName()) && methodName.equals("invoke")) {
+            if (className.equals(RpcGenericService.class.getName()) && "invoke".equals(methodName)) {
                 Class<?>[] paramTypes = null;
                 if (args[3] != null) {
                     String[] paramTypes_str = (String[]) args[3];
@@ -233,22 +233,26 @@ public class RpcReferenceBean {
             }
 
             //request
-            RpcRequest request = new RpcRequest();
-            request.setRequestId(UUID.randomUUID().toString());
-
-            request.setCreateMillisTime(System.currentTimeMillis());
-            request.setAccessToken(accessToken);
-            request.setClassName(className);
-            request.setMethodName(methodName);
-            request.setParameterTypes(parameterTypes);
-            request.setParameters(parameters);
+            RpcRequest rpcRequest = doRequest(className, methodName, parameterTypes, parameters);
             CallBack back = callBackFactory.create(callType.name());
-            Object export = back.export(request, this);
+            Object export = back.export(rpcRequest, this);
             if (null != export) {
                 return export;
             }
             return null;
         });
+    }
+    private RpcRequest doRequest(String className,String methodName,Class<?>[] parameterTypes,Object[] parameters){
+        RpcRequest request = new RpcRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+
+        request.setCreateMillisTime(System.currentTimeMillis());
+        request.setAccessToken(accessToken);
+        request.setClassName(className);
+        request.setMethodName(methodName);
+        request.setParameterTypes(parameterTypes);
+        request.setParameters(parameters);
+        return request;
     }
 
     public Class<?> getObjectType() {
