@@ -36,12 +36,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
 
         final boolean keepAlive = HttpUtil.isKeepAlive(msg);
 
-        serverHandlerPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                process(ctx, uri, repuestBytes, keepAlive);
-            }
-        });
+        serverHandlerPool.execute(() -> process(ctx, uri, repuestBytes, keepAlive));
     }
 
     private void process(ChannelHandlerContext ctx, String uri, byte[] repuestBytes, boolean keepAlive) {
