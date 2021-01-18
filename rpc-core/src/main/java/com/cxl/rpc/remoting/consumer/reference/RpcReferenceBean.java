@@ -23,7 +23,6 @@ import java.util.UUID;
 public class RpcReferenceBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcReferenceBean.class);
 
-    //-------------------config-------------------
     private Class<? extends Client> clientClass =NettyClient.class;
     private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
     private CallType callType = CallType.SYNC;
@@ -116,7 +115,7 @@ public class RpcReferenceBean {
     public RpcReferenceBean() {
     }
 
-    //get
+    //get序列化方式
     public Serializer getSerializer() {
         return serializer;
     }
@@ -129,13 +128,17 @@ public class RpcReferenceBean {
         return invokerFactory;
     }
 
-    // ---------------------- initClient ----------------------
+    // ---------------------- initClient(初始化clinet) ----------------------
     private Client client = null;
 
     public Client getClient() {
         return client;
     }
 
+    /**
+     * 初始化clinet
+     * 检验参数等等
+     */
     public void init() {
         if (null == this.clientClass) {
             throw new RpcException("rpc reference netType missing.");
@@ -168,7 +171,7 @@ public class RpcReferenceBean {
     }
 
 
-    //---------------------util-----------------
+    //动态代理
 
     public Object getObject() {
 
@@ -177,7 +180,7 @@ public class RpcReferenceBean {
             //method param
             String className = method.getDeclaringClass().getName();//iface.getName
 
-            String version1 = version;
+            String version1 = version;//分布式中版本号要带上
             String methodName = method.getName();
 
             Class<?>[] parameterTypes = method.getParameterTypes();
