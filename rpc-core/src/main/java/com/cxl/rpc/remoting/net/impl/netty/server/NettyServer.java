@@ -34,8 +34,8 @@ public class NettyServer extends Server {
 
             //param
             final ThreadPoolExecutor serverHandlerPool = ThreadPoolUtil.ThreadPool(NettyServer.class.getSimpleName());
-            EventLoopGroup bossGroup = new EpollEventLoopGroup();
-            EventLoopGroup workGroup = new EpollEventLoopGroup();
+            EventLoopGroup bossGroup = new NioEventLoopGroup();
+            EventLoopGroup workGroup = new NioEventLoopGroup();
 
             try {
                 ServerBootstrap bootstrap = new ServerBootstrap();
