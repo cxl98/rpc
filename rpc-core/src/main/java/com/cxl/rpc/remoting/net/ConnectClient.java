@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public abstract class ConnectClient {
-    protected static transient Logger logger= LoggerFactory.getLogger(ConnectClient.class);
+    protected static final transient Logger logger= LoggerFactory.getLogger(ConnectClient.class);
     private static volatile ConcurrentMap<String,ConnectClient> connectClientMap;
     private static volatile ConcurrentMap<String,Object> connectClientLockMap=new ConcurrentHashMap<>();
     //--------------------------------------------
