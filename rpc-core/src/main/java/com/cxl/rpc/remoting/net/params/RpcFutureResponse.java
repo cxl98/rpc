@@ -158,18 +158,18 @@ public class RpcFutureResponse implements Future<RpcResponse> {
     static class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 111L;
 
-        private final int done = 1;
-        private final int pending = 0;
+        private static final int DONE = 1;
+        private static final int PENDING = 0;
 
         @Override
         protected boolean tryAcquire(int arg) {
-            return getState() == done;
+            return getState() == DONE;
         }
 
         @Override
         protected boolean tryRelease(int arg) {
-            if (pending == getState()) {
-                if (compareAndSetState(pending, done)) {
+            if (PENDING == getState()) {
+                if (compareAndSetState(PENDING, DONE)) {
                     return true;
                 } else {
                     return false;
@@ -181,7 +181,7 @@ public class RpcFutureResponse implements Future<RpcResponse> {
 
         public boolean isDone() {
             getState();
-            return getState() == done;
+            return getState() == DONE;
         }
     }
 }
