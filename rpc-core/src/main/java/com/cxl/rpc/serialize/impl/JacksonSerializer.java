@@ -2,8 +2,10 @@ package com.cxl.rpc.serialize.impl;
 
 import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.util.RpcException;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,6 +16,7 @@ public class JacksonSerializer extends Serializer {
 
     static {
         objMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+//        objMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
