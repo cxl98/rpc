@@ -63,7 +63,7 @@ public class RpcInvokeFuture implements Future {
         return future;
     }
 
-    public static void setFuture(RpcInvokeFuture future){
+    public  void setFuture(RpcInvokeFuture future){
         threadInvokerFuture.set(future);
     }
 
