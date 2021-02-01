@@ -41,27 +41,27 @@ public enum  LoadBalance {
         return defaultRouter;
     }
 
-//     public static void main(String[] args) {
-//        String serviceKey = "service";
-//        TreeSet<String> addressSet = new TreeSet<String>(){{
-//            add("1");
-//            add("2");
-//            add("3");
-//            add("4");
-//            add("5");
-//        }};
-//
-////        for (LoadBalance item : LoadBalance.values()) {
-////            long start = System.currentTimeMillis();
-////            for (int i = 0; i < 10000; i++) {
-////                String address =item.rpcLoadBalance.route(serviceKey,addressSet);
-////                System.out.println(address);
-////            }
-////            long end = System.currentTimeMillis();
-////            System.out.println(item.name() + " --- " + (end-start));
-////        }
-//         LoadBalance lru = LoadBalance.match("LRU", LoadBalance.ROUND);
+     public static void main(String[] args) {
+        String serviceKey = "service";
+        TreeSet<String> addressSet = new TreeSet<String>(){{
+            add("192.168.1.0:8080");
+            add("192.168.1.1:8080");
+            add("192.168.1.2:8080");
+            add("192.168.1.3:8080");
+            add("192.168.1.4:8080");
+        }};
+
+
+            long start = System.currentTimeMillis();
+            for (int i = 0; i < 1000; i++) {
+                String address =LoadBalance.match("LFU",LoadBalance.ROUND).rpcLoadBalance.route(serviceKey,addressSet);
+                System.out.println(address);
+            }
+            long end = System.currentTimeMillis();
+            System.out.println((end-start));
+
+//         LoadBalance lru = LoadBalance.match("CONSISTENT_HASH", LoadBalance.ROUND);
 //         System.out.println(lru.name());
-//
-//     }
+
+     }
 }
