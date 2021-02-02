@@ -8,12 +8,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * service registry for "local"
+ * “本地”服务注册表
  */
 public class LocalRegistry extends ServiceRegistry {
 
     /**
-     * registry data
+     * 注册信息
      * @param param
      */
     private Map<String,TreeSet<String>> registryData;
