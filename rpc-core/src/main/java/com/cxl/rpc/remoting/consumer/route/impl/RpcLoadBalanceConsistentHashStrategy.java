@@ -1,16 +1,19 @@
 package com.cxl.rpc.remoting.consumer.route.impl;
 
 import com.cxl.rpc.remoting.consumer.route.RpcLoadBalance;
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class RpcLoadBalanceConsistentHashStrategy extends RpcLoadBalance {
-   private int VIRTUAL_NODE_NUM=5;
+    /**
+     * 虚拟节点的复制倍数
+     */
+   private final int VIRTUAL_NODE_NUM=32;
 
     /**
      * get hash code on 2^32 ring (md5散列的方式计算hash值)
@@ -29,41 +32,55 @@ public class RpcLoadBalanceConsistentHashStrategy extends RpcLoadBalance {
        }
        md5.reset();
        byte[] keyBytes;
-       try {
-           keyBytes=key.getBytes("UTF-8");
-       } catch (UnsupportedEncodingException e) {
-           throw new RuntimeException("Unknown string :" + key, e);       }
-        md5.update(keyBytes);
+       keyBytes=key.getBytes(StandardCharsets.UTF_8);
+       md5.update(keyBytes);
        byte[] digest=md5.digest();
 
-       // hash code, Truncate to 32-bits
+       // 哈希码，截断为32位
        long hashCode=((long)(digest[3] & 0xFF)<<24) |((long)(digest[2]& 0xFF)<<16) |((long)(digest[1] & 0xFF)<<8)|(digest[0] &0xFF);
-
-       long truncateHashCode=hashCode &0xffffffffL;
-       return truncateHashCode;
+       return hashCode &0xffffffffL;
    }
 
    public String doRoute(String serviceKey,TreeSet<String> addressSet){
+       //虚拟节点　 哈希值 => 物理节点
        TreeMap<Long,String> addressRing=new TreeMap<>();
 
        for (String address: addressSet) {
            for (int i = 0; i <VIRTUAL_NODE_NUM ; i++) {
-               long addressHash=hash("SHARD"+address+"-NODE-"+i);
+               long addressHash=hash(address+"_"+i);
                addressRing.put(addressHash,address);
            }
        }
 
-       long jobHash=hash(serviceKey);
-       SortedMap<Long,String> lastRing=addressRing.tailMap(jobHash);
-
-       if (!lastRing.isEmpty()) {
-           return lastRing.get(lastRing.firstKey());
+       long hash=hash(serviceKey);
+       SortedMap<Long,String> hashRing=addressRing.tailMap(hash);
+       if (!hashRing.isEmpty()) {
+           return hashRing.get(hashRing.firstKey());
        }
        return addressRing.firstEntry().getValue();
    }
+
+    // 32位的 Fowler-Noll-Vo 哈希算法 快了4倍
+    private Long FNVHash(String key) {
+        final int p = 16777619;
+        long hash = 21666136261L;
+        for (int i = 0, num = key.length(); i < num; ++i) {
+            hash = (hash ^ key.charAt(i)) * p;
+        }
+        hash += hash << 13;
+        hash ^= hash >> 7;
+        hash += hash << 3;
+        hash ^= hash >> 17;
+        hash += hash << 5;
+
+        if (hash < 0) {
+            hash = Math.abs(hash);
+        }
+        return hash;
+    }
     @Override
     public String route(String serviceKey, TreeSet<String> addressSet) {
-       String finalAddress=doRoute(serviceKey,addressSet);
-        return finalAddress;
+        return doRoute(serviceKey,addressSet);
     }
+
 }
