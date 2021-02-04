@@ -70,7 +70,6 @@ public class RpcLoadBalanceLFUStrategy  extends RpcLoadBalance {
     @Override
     public String route(String serviceKey, TreeSet<String> addressSet) {
 
-        String finalAddress=doRoute(serviceKey,addressSet);
-        return finalAddress;
+        return doRoute(serviceKey,addressSet);
     }
 }
