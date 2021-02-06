@@ -17,7 +17,6 @@ public class RpcLoadBalanceLRUStrategy extends RpcLoadBalance {
             concurrentMap.clear();
             CACHE_VALID_TIME = System.currentTimeMillis() + 24 * 60 * 60 * 1000;
         }
-
         //init lru
         LinkedHashMap<String, String> lruItem = concurrentMap.get(serviceKey);
         if (lruItem == null) {
@@ -64,14 +63,12 @@ public class RpcLoadBalanceLRUStrategy extends RpcLoadBalance {
         //load
 
         String eldestKey =lruItem.entrySet().iterator().next().getKey();
-        String eldestValue=lruItem.get(eldestKey);
 
-        return eldestValue;
+        return lruItem.get(eldestKey);
     }
 
     @Override
     public String route(String serviceKey, TreeSet<String> addressSet) {
-        String finalAddress=doRoute(serviceKey,addressSet);
-        return finalAddress;
+        return doRoute(serviceKey,addressSet);
     }
 }
