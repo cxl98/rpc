@@ -1,13 +1,12 @@
 package com.cxl.rpc.remoting.net.params;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * request
  */
 public class RpcRequest implements Serializable {
-    private static final long serialVersionUID=420L;
+    private static final long serialVersionUID = 420L;
 
 
     private String requestId;
@@ -62,19 +61,23 @@ public class RpcRequest implements Serializable {
     }
 
     public Class<?>[] getParameterTypes() {
-        return parameterTypes;
+        return parameterTypes.clone();
     }
 
     public void setParameterTypes(Class<?>[] parameterTypes) {
-        this.parameterTypes = parameterTypes;
+        this.parameterTypes = parameterTypes.clone();
+    }
+
+    /**
+     * parameters.clone()使用clone()是防止对象对修改
+     * @param parameters 参数列表
+     */
+    public void setParameters(Object[] parameters) {
+        this.parameters = parameters.clone();
     }
 
     public Object[] getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(Object[] parameters) {
-        this.parameters = parameters;
+        return parameters.clone();
     }
 
     public String getVersion() {
