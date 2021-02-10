@@ -12,7 +12,8 @@ public class Server {
 //        factory.setServiceRegistryClass(LocalRegistry.class);
 //        factory.initConfig(NetEnum.NETTY, Serializer.SerializerEnum.JACKSON.getSerializer(),-1,-1,null,8008,null,null,null);
 //        factory.setServerClass(NettyHttpServer.class);
-        factory.setSerializer(Serializer.SerializerEnum.PROTOSTUFF.getSerializer());
+        factory.setSerializer(Serializer.SerializerEnum.JACKSON.getSerializer());
+//        factory.setServerClass(NettyHttpServer.class);
         factory.addService(Deom.class.getName(),null,new DemoImpl());
 
 
