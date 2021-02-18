@@ -65,7 +65,7 @@ public abstract class ConnectClient {
             }
         }
 
-        //get-valid client
+        //得到存活的client
 
         ConnectClient connectClient=connectClientMap.get(address);
 
@@ -80,7 +80,7 @@ public abstract class ConnectClient {
             clientLock=connectClientLockMap.get(address);
         }
 
-        //remove-create new client
+        //创建新的客户端删除老的client
         synchronized (clientLock){
 
             //get-valid client ,avlid repeat
@@ -97,7 +97,7 @@ public abstract class ConnectClient {
                 connectClientMap.remove(address);
             }
 
-            //set pool
+            //把client放进连接池
 
             ConnectClient connectClient1=connectClientImpl.newInstance();
             try {
