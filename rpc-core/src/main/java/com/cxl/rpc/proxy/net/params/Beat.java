@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.net.params;
+package com.cxl.rpc.proxy.net.params;
 
 public class Beat {
     public static final int BEAT_INTERVAL = 30;
