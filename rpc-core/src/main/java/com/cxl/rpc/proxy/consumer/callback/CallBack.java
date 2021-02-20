@@ -1,10 +1,10 @@
-package com.cxl.rpc.remoting.consumer.call;
+package com.cxl.rpc.proxy.consumer.callback;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.net.Client;
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.proxy.net.Client;
+import com.cxl.rpc.proxy.net.params.RpcFutureResponse;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
