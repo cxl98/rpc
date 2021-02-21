@@ -1,9 +1,9 @@
-package com.cxl.rpc.remoting.consumer.call.impl;
+package com.cxl.rpc.proxy.consumer.callback.callbackStrategy;
 
-import com.cxl.rpc.remoting.consumer.call.CallBack;
-import com.cxl.rpc.remoting.consumer.call.CallType;
-import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
+import com.cxl.rpc.proxy.consumer.callback.CallBack;
+import com.cxl.rpc.proxy.consumer.callback.CallType;
+import com.cxl.rpc.proxy.consumer.callback.RpcInvokeCallback;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
 import com.cxl.rpc.util.RpcException;
 
 public class CallBackStrategy extends CallBack {

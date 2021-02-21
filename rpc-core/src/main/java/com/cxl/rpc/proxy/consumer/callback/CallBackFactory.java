@@ -1,9 +1,9 @@
-package com.cxl.rpc.remoting.consumer.call;
+package com.cxl.rpc.proxy.consumer.callback;
 
-import com.cxl.rpc.remoting.consumer.call.impl.CallBackStrategy;
-import com.cxl.rpc.remoting.consumer.call.impl.FutureCallStrategy;
-import com.cxl.rpc.remoting.consumer.call.impl.OneWayCallStrategy;
-import com.cxl.rpc.remoting.consumer.call.impl.SyncCallStrategy;
+import com.cxl.rpc.proxy.consumer.callback.callbackStrategy.CallBackStrategy;
+import com.cxl.rpc.proxy.consumer.callback.callbackStrategy.FutureCallStrategy;
+import com.cxl.rpc.proxy.consumer.callback.callbackStrategy.OneWayCallStrategy;
+import com.cxl.rpc.proxy.consumer.callback.callbackStrategy.SyncCallStrategy;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
