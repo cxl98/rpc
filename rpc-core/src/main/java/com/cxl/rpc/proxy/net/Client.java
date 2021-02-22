@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.net;
+package com.cxl.rpc.proxy.net;
 
-import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
+import com.cxl.rpc.proxy.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
 
 public abstract class Client {
 
