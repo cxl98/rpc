@@ -2,7 +2,7 @@ package com.cxl.server.impl;
 
 import com.cxl.api.Deom;
 import com.cxl.api.dto.UserDTO;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.util.ChannelUtil;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
