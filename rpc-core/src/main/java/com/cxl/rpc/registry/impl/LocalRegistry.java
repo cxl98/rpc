@@ -14,26 +14,27 @@ public class LocalRegistry extends ServiceRegistry {
 
     /**
      * 注册信息
+     *
      * @param param
      */
-    private Map<String,TreeSet<String>> registryData;
+    private Map<String, TreeSet<String>> registryData;
 
     @Override
     public void start(Map<String, String> param) {
-        registryData=new HashMap<>();
+        registryData = new HashMap<>(16);
     }
 
     @Override
     public void stop() {
-            registryData.clear();
+        registryData.clear();
     }
 
     @Override
     public boolean registry(Set<String> keys, String value) {
-        if (null==keys || keys.size()==0 ||null==value ||value.length()==0) {
+        if (null == keys || keys.size() == 0 || null == value || value.length() == 0) {
             return false;
         }
-        for (String key: keys) {
+        for (String key : keys) {
             registryData.computeIfAbsent(key, k -> new TreeSet<>());
         }
         return true;
@@ -41,11 +42,11 @@ public class LocalRegistry extends ServiceRegistry {
 
     @Override
     public boolean remove(Set<String> keys, String value) {
-        if (keys==null||keys.size()==0||value==null||value.length()==0) {
+        if (keys == null || keys.size() == 0 || value == null || value.length() == 0) {
             return false;
         }
-        for (String key: keys) {
-            TreeSet<String> values=registryData.get(key);
+        for (String key : keys) {
+            TreeSet<String> values = registryData.get(key);
             if (values != null) {
                 values.remove(value);
             }
@@ -55,15 +56,15 @@ public class LocalRegistry extends ServiceRegistry {
 
     @Override
     public Map<String, TreeSet<String>> discovery(Set<String> keys) {
-        if (keys==null||keys.size()==0) {
+        if (keys == null || keys.size() == 0) {
             return null;
         }
-        Map<String,TreeSet<String>> registryDataTmp=new HashMap<>();
+        Map<String, TreeSet<String>> registryDataTmp = new HashMap<>();
 
-        for (String key: keys) {
-            TreeSet<String> valueSetTmp=discovery(key);
+        for (String key : keys) {
+            TreeSet<String> valueSetTmp = discovery(key);
             if (valueSetTmp != null) {
-                registryDataTmp.put(key,valueSetTmp);
+                registryDataTmp.put(key, valueSetTmp);
             }
         }
         return null;

@@ -1,6 +1,6 @@
-package com.cxl.rpc.remoting.consumer.route;
+package com.cxl.rpc.proxy.consumer.route;
 
-import com.cxl.rpc.remoting.consumer.route.impl.*;
+import com.cxl.rpc.proxy.consumer.route.impl.*;
 
 import java.util.TreeSet;
 
@@ -54,7 +54,7 @@ public enum  LoadBalance {
 
             long start = System.currentTimeMillis();
             for (int i = 0; i < 1000; i++) {
-                String address =LoadBalance.match("LFU",LoadBalance.ROUND).rpcLoadBalance.route(serviceKey,addressSet);
+                String address =LoadBalance.match("ROUND",LoadBalance.ROUND).rpcLoadBalance.route(serviceKey,addressSet);
                 System.out.println(address);
             }
             long end = System.currentTimeMillis();
