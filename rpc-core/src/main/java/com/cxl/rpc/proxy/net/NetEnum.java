@@ -1,9 +1,9 @@
-package com.cxl.rpc.remoting.net;
+package com.cxl.rpc.proxy.net;
 
-import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
-import com.cxl.rpc.remoting.net.impl.netty.server.NettyServer;
-import com.cxl.rpc.remoting.net.impl.netty_http.client.NettyHttpClient;
-import com.cxl.rpc.remoting.net.impl.netty_http.server.NettyHttpServer;
+import com.cxl.rpc.proxy.net.impl.netty.client.NettyClient;
+import com.cxl.rpc.proxy.net.impl.netty.server.NettyServer;
+import com.cxl.rpc.proxy.net.impl.netty_http.client.NettyHttpClient;
+import com.cxl.rpc.proxy.net.impl.netty_http.server.NettyHttpServer;
 
 public enum  NetEnum {
 
