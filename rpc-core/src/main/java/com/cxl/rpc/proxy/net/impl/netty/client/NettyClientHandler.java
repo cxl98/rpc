@@ -1,8 +1,8 @@
-package com.cxl.rpc.remoting.net.impl.netty.client;
+package com.cxl.rpc.proxy.net.impl.netty.client;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.net.params.Beat;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.net.params.Beat;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;

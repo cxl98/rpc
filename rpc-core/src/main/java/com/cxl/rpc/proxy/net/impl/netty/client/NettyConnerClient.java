@@ -1,12 +1,12 @@
-package com.cxl.rpc.remoting.net.impl.netty.client;
+package com.cxl.rpc.proxy.net.impl.netty.client;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.net.ConnectClient;
-import com.cxl.rpc.remoting.net.impl.netty.codec.NettyDecoder;
-import com.cxl.rpc.remoting.net.impl.netty.codec.NettyEncoder;
-import com.cxl.rpc.remoting.net.params.Beat;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.net.ConnectClient;
+import com.cxl.rpc.proxy.net.impl.netty.codec.NettyDecoder;
+import com.cxl.rpc.proxy.net.impl.netty.codec.NettyEncoder;
+import com.cxl.rpc.proxy.net.params.Beat;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.util.IpUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -17,7 +17,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
