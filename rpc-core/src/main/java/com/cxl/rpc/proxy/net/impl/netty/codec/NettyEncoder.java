@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.net.impl.netty.codec;
+package com.cxl.rpc.proxy.net.impl.netty.codec;
 
 import com.cxl.rpc.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
