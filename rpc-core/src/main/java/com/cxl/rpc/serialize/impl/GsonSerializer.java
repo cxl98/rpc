@@ -19,7 +19,7 @@ public class GsonSerializer extends Serializer {
     }
 
     @Override
-    public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
+    public <T> Object deSerializer(byte[] bytes, Class<T> clazz) {
         T t = gson.fromJson(new String(bytes), clazz);
         return t;
     }
