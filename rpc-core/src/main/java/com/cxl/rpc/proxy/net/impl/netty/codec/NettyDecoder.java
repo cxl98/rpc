@@ -33,7 +33,7 @@ public class NettyDecoder extends ByteToMessageDecoder {
         byte [] data=new byte[in.readableBytes()];
 
         in.readBytes(data);
-        Object obj=serializer.deserializer(data,genericClass);
+        Object obj=serializer.deSerializer(data,genericClass);
         out.add(obj);
     }
 }

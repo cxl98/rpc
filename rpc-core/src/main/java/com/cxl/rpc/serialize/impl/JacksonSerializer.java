@@ -51,7 +51,7 @@ public class JacksonSerializer extends Serializer {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
+    public <T> Object deSerializer(byte[] bytes, Class<T> clazz) {
         T obj = null;
         try {
             obj = objMapper.readValue(bytes, clazz);
