@@ -1,8 +1,8 @@
-package com.cxl.rpc.remoting.net.impl.netty_http.client;
+package com.cxl.rpc.proxy.net.impl.netty_http.client;
 
-import com.cxl.rpc.remoting.net.Client;
-import com.cxl.rpc.remoting.net.ConnectClient;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
+import com.cxl.rpc.proxy.net.Client;
+import com.cxl.rpc.proxy.net.ConnectClient;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
 
 public class NettyHttpClient extends Client {
     private Class<? extends ConnectClient> connectClientImpl=NettyHttpConnectClient.class;

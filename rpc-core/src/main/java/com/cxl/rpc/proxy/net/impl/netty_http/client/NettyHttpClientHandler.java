@@ -1,8 +1,8 @@
-package com.cxl.rpc.remoting.net.impl.netty_http.client;
+package com.cxl.rpc.proxy.net.impl.netty_http.client;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.net.params.Beat;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.net.params.Beat;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.util.RpcException;
 import io.netty.buffer.ByteBufUtil;
@@ -40,7 +40,7 @@ public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttp
             throw new RpcException("response data empty");
         }
 
-        RpcResponse response= (RpcResponse) serializer.deserializer(responseBytes,RpcResponse.class);
+        RpcResponse response= (RpcResponse) serializer.deSerializer(responseBytes,RpcResponse.class);
 
         rpcInvokerFactory.notifyInvokerFuture(response.getRequestId(),response);
     }
