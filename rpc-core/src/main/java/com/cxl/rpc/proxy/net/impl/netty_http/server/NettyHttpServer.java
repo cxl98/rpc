@@ -1,8 +1,8 @@
-package com.cxl.rpc.remoting.net.impl.netty_http.server;
+package com.cxl.rpc.proxy.net.impl.netty_http.server;
 
-import com.cxl.rpc.remoting.net.Server;
-import com.cxl.rpc.remoting.net.params.Beat;
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.proxy.net.Server;
+import com.cxl.rpc.proxy.net.params.Beat;
+import com.cxl.rpc.proxy.provider.RpcProviderFactory;
 import com.cxl.rpc.util.ThreadPoolUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
