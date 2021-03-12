@@ -41,7 +41,7 @@ public class ProtostuffSerializer extends Serializer {
     }
 
     @Override
-    public <T> Object deserializer(byte[] bytes, Class<T> clazz) {
+    public <T> Object deSerializer(byte[] bytes, Class<T> clazz) {
         try {
             T message=OBJENESIS.newInstance(clazz);
             Schema<T> schema=getSchema(clazz);
