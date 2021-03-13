@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.consumer.call;
+package com.cxl.rpc.proxy.consumer.callback;
 
 public abstract class RpcInvokeCallback<T> {
     public abstract void onSuccess(T result);
