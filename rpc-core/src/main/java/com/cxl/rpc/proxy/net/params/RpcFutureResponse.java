@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.net.params;
+package com.cxl.rpc.proxy.net.params;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.consumer.call.RpcInvokeCallback;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.consumer.callback.RpcInvokeCallback;
 import com.cxl.rpc.util.RpcException;
 import com.cxl.rpc.util.ThreadPoolUtil;
 
@@ -13,11 +13,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class RpcFutureResponse implements Future<RpcResponse> {
     //net data
-    private  RpcRequest request;
+    private RpcRequest request;
     private RpcResponse response;
 
-    private  Sync sync;
-    private  List<RpcInvokeCallback> invokeCallbacks = new ArrayList<>();
+    private Sync sync;
+    private List<RpcInvokeCallback> invokeCallbacks = new ArrayList<>();
     private ThreadPoolExecutor threadPoolExecutor = null;
 
     private ReentrantLock locks = new ReentrantLock();
@@ -61,7 +61,7 @@ public class RpcFutureResponse implements Future<RpcResponse> {
             } else {
                 if (null != invokeCallbacks && invokeCallbacks.isEmpty()) {
                     this.invokeCallbacks.add(invokeCallback);
-                }else {
+                } else {
                     throw new RpcException(">>>>>>invokeCallbacks is null");
                 }
             }

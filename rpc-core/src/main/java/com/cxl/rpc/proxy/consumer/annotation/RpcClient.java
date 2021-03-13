@@ -1,19 +1,23 @@
-package com.cxl.rpc.remoting.consumer.annotation;
+package com.cxl.rpc.proxy.consumer.annotation;
 
-import com.cxl.rpc.remoting.consumer.call.CallType;
-import com.cxl.rpc.remoting.consumer.route.LoadBalance;
-import com.cxl.rpc.remoting.net.NetEnum;
+import com.cxl.rpc.proxy.consumer.callback.CallType;
+import com.cxl.rpc.proxy.consumer.route.LoadBalance;
+import com.cxl.rpc.proxy.net.NetEnum;
 import com.cxl.rpc.serialize.Serializer;
+import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 
 import java.lang.annotation.*;
 
+/**
+ * @author cxl
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface RpcReference {
+public @interface RpcClient {
     NetEnum netType() default NetEnum.NETTY;
 
-    Serializer.SerializerEnum serializer() default Serializer.SerializerEnum.JACKSON;
+    Class<? extends Serializer> serializer() default ProtostuffSerializer.class;
 
     CallType callType() default CallType.SYNC;
 
