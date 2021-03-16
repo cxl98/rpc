@@ -1,13 +1,12 @@
-package com.cxl.rpc.remoting.consumer;
+package com.cxl.rpc.proxy.consumer;
 
 import com.cxl.rpc.registry.ServiceRegistry;
 import com.cxl.rpc.registry.impl.LocalRegistry;
-import com.cxl.rpc.remoting.net.params.BaseCallback;
-import com.cxl.rpc.remoting.net.params.Beat;
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.net.params.BaseCallback;
+import com.cxl.rpc.proxy.net.params.Beat;
+import com.cxl.rpc.proxy.net.params.RpcFutureResponse;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.util.ProxyPush;
-import com.cxl.rpc.util.Push;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

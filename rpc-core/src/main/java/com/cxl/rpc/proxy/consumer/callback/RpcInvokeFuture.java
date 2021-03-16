@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.consumer.call;
+package com.cxl.rpc.proxy.consumer.callback;
 
-import com.cxl.rpc.remoting.net.params.RpcFutureResponse;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.net.params.RpcFutureResponse;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.util.RpcException;
 
 import java.util.concurrent.ExecutionException;
