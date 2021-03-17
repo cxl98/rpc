@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.consumer.route;
+package com.cxl.rpc.proxy.consumer.route;
 
 import java.util.TreeSet;
 

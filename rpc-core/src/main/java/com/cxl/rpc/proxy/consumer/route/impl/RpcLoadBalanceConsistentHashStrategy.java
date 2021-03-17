@@ -1,9 +1,7 @@
-package com.cxl.rpc.remoting.consumer.route.impl;
+package com.cxl.rpc.proxy.consumer.route.impl;
 
-import com.cxl.rpc.remoting.consumer.route.RpcLoadBalance;
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
+import com.cxl.rpc.proxy.consumer.route.RpcLoadBalance;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
