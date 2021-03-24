@@ -1,6 +1,6 @@
-package com.cxl.rpc.remoting.consumer.route.impl;
+package com.cxl.rpc.proxy.consumer.route.impl;
 
-import com.cxl.rpc.remoting.consumer.route.RpcLoadBalance;
+import com.cxl.rpc.proxy.consumer.route.RpcLoadBalance;
 
 import java.util.Random;
 import java.util.TreeSet;
