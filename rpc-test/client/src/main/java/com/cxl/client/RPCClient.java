@@ -7,6 +7,7 @@ import com.cxl.rpc.proxy.consumer.callback.RpcInvokeCallback;
 import com.cxl.rpc.proxy.consumer.callback.RpcInvokeFuture;
 import com.cxl.rpc.proxy.consumer.reference.RpcReferenceBean;
 import com.cxl.rpc.serialize.Serializer;
+import com.cxl.rpc.serialize.impl.JacksonSerializer;
 import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 import com.cxl.rpc.util.ProxyPush;
 
@@ -28,10 +29,11 @@ public class RPCClient {
     private static void testSYNC() throws InterruptedException {
         referenceBean.setIface(Deom.class);
         referenceBean.setAddress("127.0.0.1:8888");
-        referenceBean.setSerializer(ProtostuffSerializer.class);
+        referenceBean.setSerializer(JacksonSerializer.class);
 //        referenceBean.setClientClass(NettyHttpClient.class);
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
+        System.out.println();
         UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");
         ProxyPush.getInstance().setClassName(new PushImpl());
         System.out.println(say);

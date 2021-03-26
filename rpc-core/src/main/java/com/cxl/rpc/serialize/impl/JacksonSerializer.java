@@ -14,11 +14,11 @@ import java.io.IOException;
 public class JacksonSerializer extends Serializer {
     private static final ObjectMapper objMapper = new ObjectMapper();
 
-    static {
-        objMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-//        objMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
+//    static {
+//        objMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+////        objMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+//        objMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//    }
 
     /**
      * bean、array、List、Map --> json
