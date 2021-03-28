@@ -15,7 +15,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class RPCClient {
-    static RpcReferenceBean referenceBean=new RpcReferenceBean();
+    static RpcReferenceBean referenceBean = new RpcReferenceBean();
+
     public static void main(String[] args) throws Exception {
 //        testCALLBACK();
         testSYNC();
@@ -34,8 +35,8 @@ public class RPCClient {
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
         System.out.println();
-        UserDTO say = (UserDTO) deom.say("§¥%§+(", "123456");
-        ProxyPush.getInstance().setClassName(new PushImpl());
+        Object say = deom.say("§¥%§+(", "123456");
+//            ProxyPush.getInstance().setClassName(new PushImpl());
         System.out.println(say);
     }
 
@@ -46,10 +47,10 @@ public class RPCClient {
         referenceBean.setAddress("127.0.0.1:8888");
         referenceBean.init();
         Deom deom = (Deom) referenceBean.getObject();
-        RpcInvokeCallback.setCallback(new RpcInvokeCallback<UserDTO>() {
+        RpcInvokeCallback.setCallback(new RpcInvokeCallback<Object>() {
 
             @Override
-            public void onSuccess(UserDTO result) {
+            public void onSuccess(Object result) {
                 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>xxxxxxx");
                 System.out.println(result);
             }
@@ -70,8 +71,8 @@ public class RPCClient {
         referenceBean.setAddress("127.0.0.1:8888");
         Deom deom = (Deom) referenceBean.getObject();
         deom.say("123456", "123456");
-        Future<UserDTO> userDTOFuture = RpcInvokeFuture.getFuture();
-        UserDTO userDTO = userDTOFuture.get();
+        Future<Object> userDTOFuture = RpcInvokeFuture.getFuture();
+        Object userDTO = userDTOFuture.get();
         System.out.println(userDTO);
     }
 
@@ -81,7 +82,7 @@ public class RPCClient {
         referenceBean.setCallType(CallType.ONEWAY);
         referenceBean.setAddress("127.0.0.1:8888");
         Deom deom = (Deom) referenceBean.getObject();
-        UserDTO say = (UserDTO) deom.say("123456", "123456");
+        Object say =  deom.say("123456", "123456");
         System.out.println(say);
     }
 }

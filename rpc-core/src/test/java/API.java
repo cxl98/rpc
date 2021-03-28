@@ -8,6 +8,6 @@ public interface API {
         String a1=new String("a");
         String b1=new String("b");
         String c1=new String("a");
-        System.out.println(a1==c1);
+        System.out.println(a.equals(a1));
     }
 }
