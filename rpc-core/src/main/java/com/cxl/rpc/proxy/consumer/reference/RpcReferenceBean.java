@@ -1,16 +1,17 @@
-package com.cxl.rpc.remoting.consumer.reference;
+package com.cxl.rpc.proxy.consumer.reference;
 
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.consumer.call.CallBack;
-import com.cxl.rpc.remoting.consumer.call.CallBackFactory;
-import com.cxl.rpc.remoting.consumer.call.CallType;
-import com.cxl.rpc.remoting.consumer.generic.RpcGenericService;
-import com.cxl.rpc.remoting.consumer.route.LoadBalance;
-import com.cxl.rpc.remoting.net.Client;
-import com.cxl.rpc.remoting.net.impl.netty.client.NettyClient;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.consumer.callback.CallBack;
+import com.cxl.rpc.proxy.consumer.callback.CallBackFactory;
+import com.cxl.rpc.proxy.consumer.callback.CallType;
+import com.cxl.rpc.proxy.consumer.generic.RpcGenericService;
+import com.cxl.rpc.proxy.consumer.route.LoadBalance;
+import com.cxl.rpc.proxy.net.Client;
+import com.cxl.rpc.proxy.net.impl.netty.client.NettyClient;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
+import com.cxl.rpc.proxy.provider.RpcProviderFactory;
 import com.cxl.rpc.serialize.Serializer;
+import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 import com.cxl.rpc.util.ClassUtil;
 import com.cxl.rpc.util.RpcException;
 import org.slf4j.Logger;
@@ -24,7 +25,8 @@ public class RpcReferenceBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcReferenceBean.class);
 
     private Class<? extends Client> clientClass =NettyClient.class;
-    private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
+    private Class<? extends Serializer> serializer = ProtostuffSerializer.class;
+    private Serializer serializerInstance=null;
     private CallType callType = CallType.SYNC;
     private LoadBalance loadBalance = LoadBalance.ROUND;
 
@@ -50,7 +52,7 @@ public class RpcReferenceBean {
         this.clientClass = clientClass;
     }
 
-    public void setSerializer(Serializer serializer) {
+    public void setSerializer(Class<? extends Serializer> serializer) {
         this.serializer = serializer;
     }
 
@@ -117,7 +119,7 @@ public class RpcReferenceBean {
 
     //get序列化方式
     public Serializer getSerializer() {
-        return serializer;
+        return serializerInstance;
     }
 
     public long getTimeout() {
@@ -128,8 +130,9 @@ public class RpcReferenceBean {
         return invokerFactory;
     }
 
-    // ---------------------- initClient(初始化clinet) ----------------------
+
     private Client client = null;
+
 
     public Client getClient() {
         return client;
@@ -140,29 +143,30 @@ public class RpcReferenceBean {
      * 检验参数等等
      */
     public void init() {
-        if (null == this.clientClass) {
+        if (null == clientClass) {
             throw new RpcException("rpc reference netType missing.");
         }
-        if (null == this.serializer) {
-            throw new RpcException("rpc reference serializer missing.");
-        }
-        if (null == this.callType) {
+        if (null == callType) {
             throw new RpcException("rpc reference callType missing.");
         }
-        if (null == this.loadBalance) {
+        if (null == loadBalance) {
             throw new RpcException("rpc reference loadBalance missing.");
         }
         if (0 >= this.timeout) {
             this.timeout = 1000;
         }
-
-        if (null == this.invokerFactory) {
+        if (null==serializer){
+            throw new RpcException("rpc reference Serializer missing.");
+        }
+        if (null == invokerFactory) {
             this.invokerFactory = RpcInvokerFactory.getInstance();
         }
-        if (null == this.callBackFactory) {
+        if (null == callBackFactory) {
             callBackFactory = CallBackFactory.getInstance();
         }
+
         try {
+            this.serializerInstance=serializer.newInstance();
             client = clientClass.newInstance();
             client.init(this);
         } catch (InstantiationException | IllegalAccessException e) {

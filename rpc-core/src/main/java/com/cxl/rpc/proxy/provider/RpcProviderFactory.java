@@ -1,13 +1,11 @@
-package com.cxl.rpc.remoting.provider;
+package com.cxl.rpc.proxy.provider;
 
 import com.cxl.rpc.registry.ServiceRegistry;
-import com.cxl.rpc.registry.impl.LocalRegistry;
-import com.cxl.rpc.remoting.net.NetEnum;
-import com.cxl.rpc.remoting.net.Server;
-import com.cxl.rpc.remoting.net.impl.netty.server.NettyServer;
-import com.cxl.rpc.remoting.net.params.BaseCallback;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.net.Server;
+import com.cxl.rpc.proxy.net.impl.netty.server.NettyServer;
+import com.cxl.rpc.proxy.net.params.BaseCallback;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
 import com.cxl.rpc.util.IpUtil;
@@ -18,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.nio.channels.Channel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +24,7 @@ public class RpcProviderFactory {
 
     //------------------------config--------------------------
     private Class<? extends Server> serverClass= NettyServer.class;
-    private Serializer serializer = Serializer.SerializerEnum.PROTOSTUFF.getSerializer();
+    private Class<? extends Serializer> serializer = ProtostuffSerializer.class;
 
     private int corePoolSize = 60;
     private int maxPoolSize = 300;
@@ -47,7 +44,7 @@ public class RpcProviderFactory {
         this.serverClass = serverClass;
     }
 
-    public void setSerializer(Serializer serializer) {
+    public void setSerializer(Class<? extends Serializer> serializer) {
         this.serializer = serializer;
     }
 
@@ -100,13 +97,14 @@ public class RpcProviderFactory {
     }
 
     public Serializer getSerializer() {
-        return serializer;
+        return serializerInstance;
     }
 
 
     //--------------------start/stop--------------------
 
     private Server server;
+    private Serializer serializerInstance;
     private ServiceRegistry serviceRegistry;
     private String serviceAddress;
 
@@ -124,6 +122,7 @@ public class RpcProviderFactory {
         }
         //start server
         serviceAddress = IpUtil.getIpPort(this.ip, port);
+        serializerInstance=serializer.newInstance();
         server = serverClass.newInstance();
         server.setStartedCallback(new BaseCallback() {
             @Override
