@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.net.params;
+package com.cxl.rpc.proxy.net.params;
 
 import java.io.Serializable;
 

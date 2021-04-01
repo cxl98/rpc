@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.net.params;
+package com.cxl.rpc.proxy.net.params;
 
 import java.io.Serializable;
 
@@ -34,12 +34,12 @@ public class RpcResponse implements Serializable {
         this.result = result;
     }
 
-//    @Override
-//    public String toString() {
-//        return "RpcResponse{" +
-//                "requestId='" + requestId + '\'' +
-//                ", errorMsg='" + errorMsg + '\'' +
-//                ", result=" + result +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "RpcResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", errorMsg='" + errorMsg + '\'' +
+                ", result=" + result +
+                '}';
+    }
 }
