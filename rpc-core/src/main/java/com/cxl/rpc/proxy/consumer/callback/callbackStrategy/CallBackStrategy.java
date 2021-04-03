@@ -6,6 +6,9 @@ import com.cxl.rpc.proxy.consumer.callback.RpcInvokeCallback;
 import com.cxl.rpc.proxy.net.params.RpcRequest;
 import com.cxl.rpc.util.RpcException;
 
+/**
+ * @author cxl
+ */
 public class CallBackStrategy extends CallBack {
 
     @Override

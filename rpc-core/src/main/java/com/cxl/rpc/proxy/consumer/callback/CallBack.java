@@ -8,6 +8,9 @@ import com.cxl.rpc.proxy.net.params.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author cxl
+ */
 public abstract class CallBack {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(CallBack.class);

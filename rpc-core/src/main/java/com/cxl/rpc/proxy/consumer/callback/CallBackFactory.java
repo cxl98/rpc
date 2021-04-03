@@ -8,6 +8,9 @@ import com.cxl.rpc.proxy.consumer.callback.callbackStrategy.SyncCallStrategy;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * @author cxl
+ */
 public class CallBackFactory {
     private static CallBackFactory instance=new CallBackFactory();
     private CallBackFactory(){}
