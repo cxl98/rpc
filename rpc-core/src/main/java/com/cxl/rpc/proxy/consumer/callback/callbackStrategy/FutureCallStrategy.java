@@ -4,6 +4,9 @@ import com.cxl.rpc.proxy.consumer.callback.CallBack;
 import com.cxl.rpc.proxy.consumer.callback.RpcInvokeFuture;
 import com.cxl.rpc.proxy.net.params.RpcRequest;
 
+/**
+ * @author cxl
+ */
 public class FutureCallStrategy extends CallBack {
 
 

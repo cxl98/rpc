@@ -21,7 +21,6 @@ public class ChannelUtil {
 
     public void remove() {
         if (null != channel) {
-
             channel.close();
         }
     }
