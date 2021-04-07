@@ -9,6 +9,9 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author cxl
+ */
 public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(NettyClientHandler.class);

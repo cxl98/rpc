@@ -21,6 +21,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author cxl
+ */
 public class NettyConnerClient extends ConnectClient {
 
     private EventLoopGroup group;

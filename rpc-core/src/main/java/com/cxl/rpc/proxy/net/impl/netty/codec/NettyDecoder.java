@@ -7,6 +7,9 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+/**
+ * @author cxl
+ */
 public class NettyDecoder extends ByteToMessageDecoder {
     private Class<?> genericClass;
     private Serializer serializer;
