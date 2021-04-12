@@ -4,6 +4,9 @@ import com.cxl.rpc.proxy.net.Client;
 import com.cxl.rpc.proxy.net.ConnectClient;
 import com.cxl.rpc.proxy.net.params.RpcRequest;
 
+/**
+ * @author cxl
+ */
 public class NettyHttpClient extends Client {
     private Class<? extends ConnectClient> connectClientImpl=NettyHttpConnectClient.class;
     @Override

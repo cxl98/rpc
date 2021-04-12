@@ -14,6 +14,9 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author cxl
+ */
 public class NettyHttpClientHandler extends SimpleChannelInboundHandler<FullHttpResponse> {
     private static final Logger LOGGER= LoggerFactory.getLogger(NettyHttpClientHandler.class);
 
