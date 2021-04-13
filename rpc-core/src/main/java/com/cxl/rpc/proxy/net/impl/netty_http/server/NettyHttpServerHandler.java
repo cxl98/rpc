@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * @author cxl
+ */
 public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyHttpServerHandler.class);
 

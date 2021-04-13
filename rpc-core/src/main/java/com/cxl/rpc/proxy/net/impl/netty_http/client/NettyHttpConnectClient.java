@@ -21,6 +21,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author cxl
+ */
 public class NettyHttpConnectClient extends ConnectClient {
     private EventLoopGroup group;
     private Channel channel;
