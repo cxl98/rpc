@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * @author cxl
+ */
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     private static final Logger LOGGER= LoggerFactory.getLogger(NettyServerHandler.class);
 
