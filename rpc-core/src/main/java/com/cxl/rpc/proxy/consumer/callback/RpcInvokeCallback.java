@@ -1,5 +1,8 @@
 package com.cxl.rpc.proxy.consumer.callback;
 
+/**
+ * @author cxl
+ */
 public abstract class RpcInvokeCallback<T> {
     public abstract void onSuccess(T result);
 

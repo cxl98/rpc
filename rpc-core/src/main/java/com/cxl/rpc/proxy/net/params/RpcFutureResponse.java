@@ -11,6 +11,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * @author cxl
+ */
 public class RpcFutureResponse implements Future<RpcResponse> {
     //net data
     private RpcRequest request;

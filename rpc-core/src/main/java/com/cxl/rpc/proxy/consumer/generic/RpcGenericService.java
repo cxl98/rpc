@@ -1,5 +1,8 @@
 package com.cxl.rpc.proxy.consumer.generic;
 
+/**
+ * @author cxl
+ */
 public interface RpcGenericService {
     /**
      * generic invoke
