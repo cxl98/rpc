@@ -9,6 +9,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * @author cxl
+ */
 public class RpcInvokeFuture implements Future {
     private RpcFutureResponse futureResponse;
 
