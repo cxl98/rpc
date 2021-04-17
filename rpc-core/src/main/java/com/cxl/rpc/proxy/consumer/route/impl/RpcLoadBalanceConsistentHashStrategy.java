@@ -7,6 +7,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+/**
+ * @author cxl
+ */
 public class RpcLoadBalanceConsistentHashStrategy extends RpcLoadBalance {
     /**
      * 虚拟节点的复制倍数
