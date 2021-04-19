@@ -6,6 +6,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * @author cxl
+ */
 public class RpcLoadBalanceLFUStrategy  extends RpcLoadBalance {
     private ConcurrentMap<String, HashMap<String,Integer>> concurrentMap=new ConcurrentHashMap<>();
     private long CACHE_VALID_TIME=0;
