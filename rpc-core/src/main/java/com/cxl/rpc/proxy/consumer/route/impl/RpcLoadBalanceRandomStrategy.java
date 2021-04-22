@@ -5,6 +5,9 @@ import com.cxl.rpc.proxy.consumer.route.RpcLoadBalance;
 import java.util.Random;
 import java.util.TreeSet;
 
+/**
+ * @author cxl
+ */
 public class RpcLoadBalanceRandomStrategy extends RpcLoadBalance {
     private Random random=new Random();
     @Override
