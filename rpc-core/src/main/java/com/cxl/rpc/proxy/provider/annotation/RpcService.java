@@ -1,4 +1,4 @@
-package com.cxl.rpc.remoting.provider.annotation;
+package com.cxl.rpc.proxy.provider.annotation;
 
 import java.lang.annotation.*;
 

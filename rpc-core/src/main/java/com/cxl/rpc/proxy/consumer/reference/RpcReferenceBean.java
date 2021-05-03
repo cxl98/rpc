@@ -21,6 +21,9 @@ import java.lang.reflect.Proxy;
 import java.util.TreeSet;
 import java.util.UUID;
 
+/**
+ * @author cxl
+ */
 public class RpcReferenceBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcReferenceBean.class);
 
