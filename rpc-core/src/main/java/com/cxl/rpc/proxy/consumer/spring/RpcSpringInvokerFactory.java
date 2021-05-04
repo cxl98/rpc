@@ -1,9 +1,9 @@
-package com.cxl.rpc.remoting.consumer.impl;
+package com.cxl.rpc.proxy.consumer.spring;
 
 import com.cxl.rpc.registry.ServiceRegistry;
-import com.cxl.rpc.remoting.consumer.RpcInvokerFactory;
-import com.cxl.rpc.remoting.consumer.annotation.RpcReference;
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.proxy.consumer.RpcInvokerFactory;
+import com.cxl.rpc.proxy.consumer.annotation.RpcClient;
+import com.cxl.rpc.proxy.provider.RpcProviderFactory;
 import com.cxl.rpc.util.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author cxl
+ */
 public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessorAdapter implements InitializingBean, DisposableBean, BeanFactoryAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcSpringInvokerFactory.class);
 
@@ -66,14 +69,14 @@ public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessor
 
         //parse RpcReferenceBean
         ReflectionUtils.doWithFields(bean.getClass(), field -> {
-            if (field.isAnnotationPresent(RpcReference.class)) {
+            if (field.isAnnotationPresent(RpcClient.class)) {
                 //valid
                 Class iface = field.getType();
                 if (!iface.isInterface()) {
                     throw new RpcException("rpc, reference(RpcReference) must be interface.");
                 }
 
-                RpcReference rpcReference = field.getAnnotation(RpcReference.class);
+                RpcClient rpcClient = field.getAnnotation(RpcClient.class);
 
                 //init reference bean
 //                RpcReferenceBean referenceBean = new RpcReferenceBean(rpcReference.netType(), rpcReference.serializer().getSerializer(), rpcReference.callType(), rpcReference.loadBalance(), iface, rpcReference.version(), rpcReference.timeout(), rpcReference.address(), rpcReference.accessToken(), null, invokerFactory);
@@ -84,10 +87,10 @@ public class RpcSpringInvokerFactory extends InstantiationAwareBeanPostProcessor
                 field.setAccessible(true);
 //                field.set(bean,serviceProxy);
 
-                LOGGER.info(">>>>>>>>>>>>>>invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}", RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version()),beanName,field.getName());
+                LOGGER.info(">>>>>>>>>>>>>>invoker factory init reference bean success. serviceKey = {}, bean.field = {}.{}", RpcProviderFactory.makeServiceKey(iface.getName(), rpcClient.version()),beanName,field.getName());
 
                 //collection
-                String serviceKey=RpcProviderFactory.makeServiceKey(iface.getName(),rpcReference.version());
+                String serviceKey=RpcProviderFactory.makeServiceKey(iface.getName(), rpcClient.version());
                 serviceKeyList.add(serviceKey);
 
             }

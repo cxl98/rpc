@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.provider.impl;
+package com.cxl.rpc.proxy.provider.spring;
 
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
-import com.cxl.rpc.remoting.provider.annotation.RpcService;
+import com.cxl.rpc.proxy.provider.RpcProviderFactory;
+import com.cxl.rpc.proxy.provider.annotation.RpcService;
 import com.cxl.rpc.util.RpcException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
