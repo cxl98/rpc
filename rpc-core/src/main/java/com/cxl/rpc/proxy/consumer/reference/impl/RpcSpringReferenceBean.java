@@ -1,9 +1,12 @@
-package com.cxl.rpc.remoting.consumer.reference.impl;
+package com.cxl.rpc.proxy.consumer.reference.impl;
 
-import com.cxl.rpc.remoting.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.proxy.consumer.reference.RpcReferenceBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
+/**
+ * @author cxl
+ */
 public class RpcSpringReferenceBean implements FactoryBean<Object>, InitializingBean {
 
     private RpcReferenceBean rpcReferenceBean;
