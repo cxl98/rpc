@@ -1,7 +1,7 @@
-package com.cxl.rpc.remoting.net;
+package com.cxl.rpc.proxy.net;
 
-import com.cxl.rpc.remoting.net.params.BaseCallback;
-import com.cxl.rpc.remoting.provider.RpcProviderFactory;
+import com.cxl.rpc.proxy.net.params.BaseCallback;
+import com.cxl.rpc.proxy.provider.RpcProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
