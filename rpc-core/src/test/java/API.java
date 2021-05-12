@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+
 public interface API {
     public Object xxx(String x);
 
