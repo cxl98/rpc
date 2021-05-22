@@ -1,12 +1,15 @@
-package com.cxl.rpc.remoting.consumer.call.impl;
+package com.cxl.rpc.proxy.consumer.callback.callbackStrategy;
 
-import com.cxl.rpc.remoting.consumer.call.CallBack;
-import com.cxl.rpc.remoting.net.params.RpcRequest;
-import com.cxl.rpc.remoting.net.params.RpcResponse;
+import com.cxl.rpc.proxy.consumer.callback.CallBack;
+import com.cxl.rpc.proxy.net.params.RpcRequest;
+import com.cxl.rpc.proxy.net.params.RpcResponse;
 import com.cxl.rpc.util.RpcException;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author cxl
+ */
 public class SyncCallStrategy extends CallBack {
 
 
