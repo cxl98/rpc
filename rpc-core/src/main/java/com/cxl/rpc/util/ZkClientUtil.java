@@ -29,7 +29,7 @@ public class ZkClientUtil {
         if (null == this.watcher) {
             this.watcher = watchedEvent -> {
                 LOGGER.info(">>>>>>rpc:watcher:{}", watchedEvent);
-                //session 过时（失效）,关闭旧的连接，ｃｒｅａｔｅ新的连接
+                //session 过时（失效）,关闭旧的连接，创建新的连接
                 if (watchedEvent.getState() == Watcher.Event.KeeperState.Expired) {
                     destroy();
                     getClient();
