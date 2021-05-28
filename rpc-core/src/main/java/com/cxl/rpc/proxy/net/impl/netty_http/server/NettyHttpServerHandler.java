@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Stack;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -24,8 +26,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyHttpServerHandler.class);
 
-    private RpcProviderFactory rpcProviderFactory;
-    private ThreadPoolExecutor serverHandlerPool;
+    private final RpcProviderFactory rpcProviderFactory;
+    private final ThreadPoolExecutor serverHandlerPool;
+    private static final String SERVER="/services";
 
     public NettyHttpServerHandler(final RpcProviderFactory rpcProviderFactory, final ThreadPoolExecutor serverHandlerPool) {
         this.rpcProviderFactory = rpcProviderFactory;
@@ -33,54 +36,40 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
-        final byte[] repuestBytes = ByteBufUtil.getBytes(msg.content());
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) {
+        final byte[] requestBytes = ByteBufUtil.getBytes(msg.content());
         final String uri = msg.uri();
 
         final boolean keepAlive = HttpUtil.isKeepAlive(msg);
 
-        serverHandlerPool.execute(() -> process(ctx, uri, repuestBytes, keepAlive));
+        serverHandlerPool.execute(() -> process(ctx, uri, requestBytes, keepAlive));
     }
 
-    private void process(ChannelHandlerContext ctx, String uri, byte[] repuestBytes, boolean keepAlive) {
-        String repuestId = null;
-        try {
-            if ("/services".equals(uri)) {
-                StringBuffer stringBuffer = new StringBuffer("<ui>");
-                for (String serverKey : rpcProviderFactory.getServiceData().keySet()) {
-                    stringBuffer.append("<li>").append(serverKey).append(": ").append(rpcProviderFactory.getServiceData().get(serverKey)).append("</li>");
-                }
-                stringBuffer.append("</ui>");
-
-                byte[] responseBytes = stringBuffer.toString().getBytes("UTF-8");
-                writeResponse(ctx, keepAlive, responseBytes);
-            } else {
-                if (repuestBytes.length == 0) {
-                    throw new RpcException(">>>>>>request data empty");
-                }
-
-                RpcRequest request = (RpcRequest) rpcProviderFactory.getSerializer().deSerializer(repuestBytes, RpcRequest.class);
-                repuestId = request.getRequestId();
-
-
-                if (Beat.BEAT_ID.equalsIgnoreCase(request.getRequestId())) {
-                    LOGGER.debug(">>>>>>>>>>> provider netty_http server read beat-ping.");
-                    return;
-                }
-
-                RpcResponse response = rpcProviderFactory.invokeService(request);
-                byte[] responseBytes = rpcProviderFactory.getSerializer().serializer(response);
-                writeResponse(ctx, keepAlive, responseBytes);
+    private void process(ChannelHandlerContext ctx, String uri, byte[] requestBytes, boolean keepAlive) {
+        if (SERVER.equals(uri)) {
+            StringBuilder stringBuffer = new StringBuilder("<ui>");
+            for (String serverKey : rpcProviderFactory.getServiceData().keySet()) {
+                stringBuffer.append("<li>").append(serverKey).append(": ").append(rpcProviderFactory.getServiceData().get(serverKey)).append("</li>");
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            stringBuffer.append("</ui>");
 
-            RpcResponse response = new RpcResponse();
-            response.setRequestId(repuestId);
-            response.setErrorMsg(ThrowableUtil.toString(e));
+            byte[] responseBytes = stringBuffer.toString().getBytes(StandardCharsets.UTF_8);
+            writeResponse(ctx, keepAlive, responseBytes);
+        } else {
+            if (requestBytes.length == 0) {
+                throw new RpcException(">>>>>>request data empty");
+            }
 
+            RpcRequest request = (RpcRequest) rpcProviderFactory.getSerializer().deSerializer(requestBytes, RpcRequest.class);
+
+
+            if (Beat.BEAT_ID.equalsIgnoreCase(request.getRequestId())) {
+                LOGGER.debug(">>>>>>>>>>> provider netty_http server read beat-ping.");
+                return;
+            }
+
+            RpcResponse response = rpcProviderFactory.invokeService(request);
             byte[] responseBytes = rpcProviderFactory.getSerializer().serializer(response);
-
             writeResponse(ctx, keepAlive, responseBytes);
         }
     }
@@ -96,12 +85,12 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOGGER.error(">>>>>>>>provider netty_http server caught exception", cause);
         ctx.close();
     }
