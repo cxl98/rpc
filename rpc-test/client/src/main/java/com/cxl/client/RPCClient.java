@@ -6,6 +6,7 @@ import com.cxl.rpc.proxy.consumer.callback.CallType;
 import com.cxl.rpc.proxy.consumer.callback.RpcInvokeCallback;
 import com.cxl.rpc.proxy.consumer.callback.RpcInvokeFuture;
 import com.cxl.rpc.proxy.consumer.reference.RpcReferenceBean;
+import com.cxl.rpc.proxy.net.impl.netty_http.client.NettyHttpClient;
 import com.cxl.rpc.serialize.Serializer;
 import com.cxl.rpc.serialize.impl.JacksonSerializer;
 import com.cxl.rpc.serialize.impl.ProtostuffSerializer;
